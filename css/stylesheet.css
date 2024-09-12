@@ -1,0 +1,111 @@
+/* General Styling */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f6f7f8;
+}
+
+/* Navigation Bar */
+nav {
+    background-color: #3c0056;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+}
+
+nav .logo {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+nav .search-bar input {
+    padding: 7px;
+    border: none;
+    border-radius: 3px;
+    width: 300px;
+}
+
+nav .user-menu button {
+    margin-left: 10px;
+    background-color: white;
+    color: #3c0056;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+nav .user-menu button:hover {
+    background-color: #ecc8fb;
+}
+
+/* Main Feed */
+main {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.feed {
+    width: 60%;
+    max-width: 800px;
+}
+
+/* Post Styling */
+.post {
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: flex-start;
+}
+
+.post-voting {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.post-voting button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5em;
+}
+
+.post-voting .vote-count {
+    font-size: 1.2em;
+    margin: 5px 0;
+}
+
+.post-title {
+    margin: 0;
+    font-size: 1.3em;
+    font-weight: bold;
+}
+
+.post-body {
+    margin: 10px 0;
+}
+
+.post-footer {
+    font-size: 0.9em;
+    color: #777;
+}
+
+.post-footer button {
+    background: none;
+    border: none;
+    color: #3c0056;
+    cursor: pointer;
+}
+
+.post-footer button:hover {
+    text-decoration: underline;
+}
