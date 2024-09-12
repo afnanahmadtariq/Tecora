@@ -19,42 +19,69 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <main>
-        <div class="feed">
-            <!-- Post Template -->
-            <div class="post">
-                <div class="post-voting">
-                    <button class="upvote">▲</button>
-                    <div class="vote-count">120</div>
-                    <button class="downvote">▼</button>
+   <!-- Main Content -->
+   <main>
+        <div class="container">
+            <!-- Left Sidebar (Different Options) -->
+            <aside class="sidebar left-sidebar">
+                <h3>Options</h3>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Popular</a></li>
+                    <li><a href="#">New</a></li>
+                    <li><a href="#">Rising</a></li>
+                    <li><a href="#">All</a></li>
+                </ul>
+            </aside>
+
+            <!-- Feed -->
+            <div class="feed">
+                <!-- Post Template -->
+                <div class="post">
+                    <div class="post-voting">
+                        <button class="upvote">▲</button>
+                        <div class="vote-count">120</div>
+                        <button class="downvote">▼</button>
+                    </div>
+                    <div class="post-content">
+                        <h2 class="post-title">Post Title Example</h2>
+                        <p class="post-body">This is an example of a post body. Users can post content and it will show here.</p>
+                        <div class="post-footer">
+                            <span>Posted by user123 • 5 hours ago</span>
+                            <button class="comment-btn">Comments</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="post-content">
-                    <h2 class="post-title">Post Title Example</h2>
-                    <p class="post-body">This is an example of a post body. Users can post content and it will show here.</p>
-                    <div class="post-footer">
-                        <span>Posted by user123 • 5 hours ago</span>
-                        <button class="comment-btn">Comments</button>
+
+                <!-- Repeat posts -->
+                <div class="post">
+                    <div class="post-voting">
+                        <button class="upvote">▲</button>
+                        <div class="vote-count">50</div>
+                        <button class="downvote">▼</button>
+                    </div>
+                    <div class="post-content">
+                        <h2 class="post-title">Another Post Title</h2>
+                        <p class="post-body">Another post example with a brief description of what users post here.</p>
+                        <div class="post-footer">
+                            <span>Posted by user456 • 2 days ago</span>
+                            <button class="comment-btn">Comments</button>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Repeat posts -->
-            <div class="post">
-                <div class="post-voting">
-                    <button class="upvote">▲</button>
-                    <div class="vote-count">50</div>
-                    <button class="downvote">▼</button>
-                </div>
-                <div class="post-content">
-                    <h2 class="post-title">Another Post Title</h2>
-                    <p class="post-body">Another post example with a brief description of what users post here.</p>
-                    <div class="post-footer">
-                        <span>Posted by user456 • 2 days ago</span>
-                        <button class="comment-btn">Comments</button>
-                    </div>
-                </div>
-            </div>
+            <!-- Right Sidebar (Recent Posts) -->
+            <aside class="sidebar right-sidebar">
+                <h3>Recent Posts</h3>
+                <ul>
+                    <li><a href="#">Recent Post 1</a></li>
+                    <li><a href="#">Recent Post 2</a></li>
+                    <li><a href="#">Recent Post 3</a></li>
+                    <li><a href="#">Recent Post 4</a></li>
+                    <li><a href="#">Recent Post 5</a></li>
+                </ul>
+            </aside>
         </div>
     </main>
 
