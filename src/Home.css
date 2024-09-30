@@ -8,7 +8,7 @@ body {
 .main {
     margin-top: 8vh;
     margin-left: 15vw; 
-    width: 85vw;    
+    width: 83vw;    
     position: relative;     
     padding: 20px;
     box-sizing: border-box;
@@ -17,5 +17,36 @@ body {
 .main-logo {
     padding: 60px;
     float: inline-end;
-    margin-top: -30vh;
+    /* margin-top: -30vh; */
+}
+
+.description {
+    padding: 8vh;
+}
+
+.description > *{
+    padding: 3vh;
+}
+
+.caption {
+    background: linear-gradient(to right, #4EE8F2, #0062ff, #0011ff);
+    background-clip: text;
+    -webkit-background-clip: text; 
+    -webkit-text-fill-color: transparent;
+} 
+h1 {
+    font-size: large;
+    text-align: center;
+} 
+.des2 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.des2 > img{
+    width: 25vw;
+}
+#para2 {
+    width: 30vw;
+    text-align: justify;
 }

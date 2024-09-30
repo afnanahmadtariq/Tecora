@@ -32,7 +32,7 @@
 }
 .name {
   background: linear-gradient(to right, #4EE8F2, #0862F0);
-  -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 .card {

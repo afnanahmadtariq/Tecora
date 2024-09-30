@@ -14,7 +14,7 @@ function Nav() {
             <li><img src={explore}alt="search" />Explore</li>
             <li><img src={projects}alt="projects" />Projects</li>
             <li><img src={queries}alt="queries" />Queries</li>
-            <li><img src={topics}alt="topics" />Topics</li>
+            <li><img src={topics}alt="topics" />Topics </li>
             <li><img src={experts}alt="experts" />Top Experts</li>
             <li><img src={tecora}alt="tecora" /><p id='tecora-page'>Tecora</p></li>
         </ul>

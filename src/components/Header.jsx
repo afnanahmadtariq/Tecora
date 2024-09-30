@@ -14,9 +14,7 @@ function Header() {
             />
             <span className="search-icon"><img src={search}alt="search" /></span>
         </div>
-        <button className="gradient-signup-button" >
-          Sign up
-        </button>
+        <button className="gradient-signup-button" >Sign up</button>
     </header>
   )
 }
