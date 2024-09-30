@@ -1,5 +1,5 @@
 import Header from './components/Header'
-import Nav from './components/nav'
+import Nav from './components/Nav'
 import tecoraLogo from './assets/Tecora logo.svg'
 import peeps from './assets/2peeps.png'
 import './Home.css'
