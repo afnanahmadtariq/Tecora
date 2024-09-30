@@ -10,9 +10,9 @@ function App() {
       <div>
           <img src={tecoraLogo} className="logo" alt="React logo" />
       </div>
-      <h1>Tecora</h1>
+      <h1 className='name'>Tecora</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
+        <button className="gradient-signup-button" onClick={() => setCount((count) => count + 1)}>
           Click me {count}
         </button>
       </div>
