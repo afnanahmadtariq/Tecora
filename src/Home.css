@@ -1,0 +1,21 @@
+* {
+    margin: 0;
+}
+body {
+    background-color: #EAF4F4;
+}
+
+.main {
+    margin-top: 8vh;
+    margin-left: 15vw; 
+    width: 85vw;    
+    position: relative;     
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.main-logo {
+    padding: 60px;
+    float: inline-end;
+    margin-top: -30vh;
+}

@@ -1,0 +1,77 @@
+header {
+    position: absolute;
+    width: 100%;
+    height: 8vh;
+    margin: 0;
+    top: 0;
+    display: flex;
+    align-items: center;    
+    justify-content: space-between; 
+    padding: 0 20px;
+    border-bottom: #b0b0b0 solid 2px;
+    box-sizing: border-box;
+}
+
+
+#tecora {
+    padding: 10px;
+    font-size: xx-large;
+    background: linear-gradient(to right, #4EE8F2, #0862F0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+  /* SearchBar.css */
+.search-bar-container {
+    display: flex;
+    align-items: center;
+    width: 400px; /* Adjust width as needed */
+    padding: 10px;
+    border-radius: 20px;
+    background-color: #eef5f5; /* Light background color */
+    box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    position: relative;
+}
+  
+.search-input {
+    border: none;
+    background: transparent;
+    outline: none;
+    flex-grow: 1;
+    padding-left: 30px; /* Adds space for the search icon */
+    font-size: 16px;
+}
+  
+.search-icon {
+    position: absolute;
+    left: 10px;
+    font-size: 16px;
+    color: #b0b0b0; /* Adjust the color of the icon */
+}
+
+.search-input::placeholder {
+    color: #b0b0b0; /* Placeholder text color */
+}
+  
+
+.gradient-signup-button {
+    background: linear-gradient(to right, #4EE8F2, #0862F0);
+    color: white;
+    font-weight: 600;
+    padding: 10px 24px;
+    border-radius: 6px;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    font-size: 16px;
+}
+  
+.gradient-signup-button:hover {
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    transform: scale(1.05);
+}
+  
+.gradient-signup-button:focus {
+    outline: none;
+}

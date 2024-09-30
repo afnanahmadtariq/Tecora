@@ -2,11 +2,13 @@ import { SpeedInsights } from '@vercel/speed-insights/react';
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import App from './App.jsx'
+// import Home from './Home';
 import './index.css'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <App />
+    {/* <Home /> */}
     <SpeedInsights />
   </StrictMode>,
 )

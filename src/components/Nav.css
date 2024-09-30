@@ -1,0 +1,26 @@
+.nav {
+    position: absolute;
+    left: 0;
+    top: 8vh;
+    width: 15vw;
+    height: 92%;
+    border-right: #b0b0b0 solid 2px;
+    display: flex;
+    justify-content: center;
+}
+ul {
+    list-style: none;
+}
+ul li {
+    padding: 20px;
+    display: flex;
+    align-items: center;  
+    font-weight: bold;  
+}
+ul li img{
+    padding: 2px;
+    width: 2vw;
+}
+#tecora-page {
+    color: #F05454;
+}
