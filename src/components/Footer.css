@@ -7,7 +7,7 @@ footer {
     background-color: #0A142F;
 }
 #foot-box {
-    padding: 6vw;
+    padding: 5.5vw;
     display: flex;    
     align-items: center;  
     justify-content: space-between;
@@ -33,12 +33,14 @@ footer {
     padding: 1.5vh;
 }
 
+#contact {
+    padding-right: 0vh !important;
+}
 #contact > *{
     padding: 2vh;
     margin-top: 2vh ;
     margin-bottom: 2vh ;
 }
-
 
 
 .contact-container {
@@ -69,13 +71,6 @@ footer {
     border-radius: 0 10px 10px 0;
     background-color:#0011ff;
 }
-
-.search-input::placeholder {
-    color: #b0b0b0; /* Placeholder text color */
-}
-  
-
-
 
 
 #socials {
