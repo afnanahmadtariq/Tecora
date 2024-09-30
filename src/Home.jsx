@@ -1,7 +1,15 @@
 import Header from './components/Header'
 import Nav from './components/Nav'
+import Footer from './components/Footer'
 import tecoraLogo from './assets/Tecora logo.svg'
 import peeps from './assets/2peeps.png'
+import team from './assets/team.png'
+import guidance from './assets/services/guidance.svg'
+import qna from './assets/services/qna.svg'
+import project from './assets/services/project.svg'
+import collab from './assets/services/collab.svg'
+import feed from './assets/services/feed.svg'
+import resource from './assets/services/resource.svg'
 import './Home.css'
 
 function Home() {
@@ -32,6 +40,24 @@ function Home() {
             to share your expertise, Tecora is here to facilitate your journey of growth and discovery.
           </p>
         </div>
+        <h1>Our Services</h1>
+        <div className='description des3'>
+          <div>
+            <img src={guidance} alt="" />
+            <img src={qna} alt="" />
+            <img src={project} alt="" />
+          </div>
+          <div>
+            <img src={collab} alt="" />
+            <img src={feed} alt="" />
+            <img src={resource} alt="" />
+          </div>
+        </div>
+        <div className='description team'>
+          <h1>Our Team</h1>
+          <img src={team} alt="" />
+        </div>
+        <Footer />
       </div>
     </>
   )

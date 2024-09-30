@@ -8,16 +8,16 @@
     display: flex;
     justify-content: center;
 }
-ul {
+.nav > ul {
     list-style: none;
 }
-ul li {
+.nav > ul li {
     padding: 20px;
     display: flex;
     align-items: center;  
     font-weight: bold;  
 }
-ul li img{
+.nav > ul li img{
     padding: 2px;
     width: 2vw;
 }

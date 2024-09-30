@@ -16,6 +16,7 @@ header {
 
 
 #tecora {
+    font-weight: bold;
     padding: 10px;
     font-size: xx-large;
     background: linear-gradient(to right, #4EE8F2, #0862F0);

@@ -8,7 +8,7 @@ body {
 .main {
     margin-top: 8vh;
     margin-left: 15vw; 
-    width: 83vw;    
+    width: 84vw;    
     position: relative;     
     padding: 20px;
     box-sizing: border-box;
@@ -29,12 +29,15 @@ body {
 }
 
 .caption {
+    font-weight: bold;
+    text-align: left;
     background: linear-gradient(to right, #4EE8F2, #0062ff, #0011ff);
     background-clip: text;
     -webkit-background-clip: text; 
     -webkit-text-fill-color: transparent;
 } 
 h1 {
+    font-weight: lighter;
     font-size: large;
     text-align: center;
 } 
@@ -49,4 +52,20 @@ h1 {
 #para2 {
     width: 30vw;
     text-align: justify;
+}
+.des3 > div {
+    display: flex;
+    justify-content: center;
+}
+.des3 > div > *{
+    padding: 2vw;
+}
+.team {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.team > img {
+    border-left: grey solid 1.2px;
+    
 }
