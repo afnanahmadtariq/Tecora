@@ -1,5 +1,5 @@
-export const sendDataToBackend = (data) => {
-    fetch(import.meta.env.VITE_BACKEND_URL+'/api/posts', {
+export const sendDataToBackend = (data, path) => {
+    fetch(import.meta.env.VITE_BACKEND_URL+'/api/'+path, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

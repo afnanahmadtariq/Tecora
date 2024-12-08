@@ -1,7 +1,7 @@
 import { Fragment, useState, forwardRef } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { FiX } from "react-icons/fi";
-import { sendDataToBackend } from "../api/postqeury";
+import { sendDataToBackend } from "../api/post";
 
 
 const ModalOverlay = forwardRef(({ children }, ref) => (
@@ -32,7 +32,7 @@ export function PostModal({ isOpen, onClose }) {
         category: category
       };
         // Send the data to the backend
-      sendDataToBackend(data);
+      sendDataToBackend(data, 'posts');
       // sendDataToBackend
       // Add your form submission logic here.
       onClose(); // Close modal after submission
