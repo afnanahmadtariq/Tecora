@@ -6,7 +6,6 @@ export default function Settings() {
   const { isDark } = useTheme();
   
   // Profile state variables
-  const [userId] = useState("12345"); // Simulated user_id (this could be fetched or passed as a prop)
   const [username, setUsername] = useState("User123");
   const [email, setEmail] = useState("user@example.com");
   const [password, setPassword] = useState("");
@@ -33,7 +32,6 @@ export default function Settings() {
   // Handle save functionality
   const handleSave = () => {
     const profileData = {
-      user_id: userId,
       username,
       email,
       password, // This could be handled as a separate change (e.g., through a password reset flow)
