@@ -20,15 +20,17 @@ export default function Settings() {
   });
 
   useEffect(()=>{
-    const userID = localStorage.getItem('SSID')
-
-    if(userID){
-      setUserID(Number(userID));
-    }
-    const pic = localStorage.getItem('pic')
-
-    if(pic){
-      setProfilePic(pic);
+    if (typeof window !== 'undefined') { // Checks if we're in the browser
+      const userID = localStorage.getItem('SSID')
+  
+      if(userID){
+        setUserID(Number(userID));
+      }
+      const pic = localStorage.getItem('pic')
+  
+      if(pic){
+        setProfilePic(pic);
+      }
     }
   },[]);
 
