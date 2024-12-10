@@ -268,7 +268,8 @@ export function LoginModal({onLoginSuccess, isOpen, onClose, onSwitchToSignUp })
       password,
     };
     const response = await sendDataToBackend(data, 'login');
-    if (response.message == 'Logged in successfully'  ){
+    if (response.message == 'Logged in successfully'){
+      localStorage.setItem('SSID', JSON.stringify(response.user_id))
       onLoginSuccess(response.profilepic);
     }
   };
