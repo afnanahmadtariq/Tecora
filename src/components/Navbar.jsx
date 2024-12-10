@@ -12,10 +12,12 @@ export default function Navbar() {
   const [profilepic, setprofilepic] = useState("https://robohash.org/example");
 
   useEffect(()=>{
-    const userID = localStorage.getItem('SSID')
-
-    if(userID){
-      setIsLoginOpen(true);
+    if (typeof window !== 'undefined') { // Checks if we're in the browser
+      const userID = localStorage.getItem('SSID')
+  
+      if(userID){
+        setIsLoginOpen(true);
+      }
     }
   },[]);
   
