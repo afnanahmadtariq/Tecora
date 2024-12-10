@@ -11,7 +11,7 @@ export default function Navbar() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [profilepic, setprofilepic] = useState("https://robohash.org/example");
 
-  // useEffect(()=>{
+  useEffect(()=>{
   //   if (typeof window !== 'undefined') { // Checks if we're in the browser
   //     const userID = localStorage.getItem('SSID')
   
@@ -19,7 +19,7 @@ export default function Navbar() {
   //       setIsLoginOpen(true);
   //     }
   //   }
-  // },[]);
+  },[]);
   
   // Assuming you have a way to check if the user is logged in (e.g., through context or state)
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Change this based on your login state
