@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { SignUpModal, LoginModal } from './AuthModals';
 import { PostModal } from './PostModals';
 import { useTheme } from '../context/ThemeContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function Navbar() {
   const { isDark, toggleTheme } = useTheme();
@@ -12,6 +13,7 @@ export default function Navbar() {
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [profilepic, setprofilepic] = useState("https://robohash.org/example");
   const [isLoggedIn, setIsLoggedIn] = useState(false); // Change this based on your login state
+  const navigate = useNavigate();
 
   useEffect(()=>{
     if (typeof window !== 'undefined') { // Checks if we're in the browser
@@ -19,6 +21,8 @@ export default function Navbar() {
   
       if(userID){
         setIsLoggedIn(true);
+        const pic = localStorage.getItem('pic')
+        setprofilepic(pic);
       }
     }
   },[]);
@@ -36,8 +40,7 @@ export default function Navbar() {
   };
 
   const handleProfileClick = () => {
-    // Open the profile settings (this could be a modal or navigate to a settings page)
-    alert('Opening Profile Settings...');
+    navigate("/settings");
   };
 
   const handleLoginSuccess = (pic) => {
