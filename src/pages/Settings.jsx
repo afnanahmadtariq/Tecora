@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { sendDataToBackend } from '../api/post';
-
+import React, { useState, useEffect } from 'react';
 
 export default function Settings() {
   const { isDark } = useTheme();
@@ -19,20 +19,20 @@ export default function Settings() {
     github: "https://github.com/user"
   });
 
-  // useEffect(()=>{
-  //   if (typeof window !== 'undefined') { // Checks if we're in the browser
-  //     const userID = localStorage.getItem('SSID')
+  useEffect(()=>{
+    if (typeof window !== 'undefined') { // Checks if we're in the browser
+      const userID = localStorage.getItem('SSID')
   
-  //     if(userID){
-  //       setUserID(Number(userID));
-  //     }
-  //     const pic = localStorage.getItem('pic')
+      if(userID){
+        setUserID(Number(userID));
+      }
+      const pic = localStorage.getItem('pic')
   
-  //     if(pic){
-  //       setProfilePic(pic);
-  //     }
-  //   }
-  // },[]);
+      if(pic){
+        setProfilePic(pic);
+      }
+    }
+  },[]);
 
   // Handle profile image change
   const handleImageChange = (e) => {
