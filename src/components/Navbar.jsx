@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { FiSearch, FiMoon, FiSun } from 'react-icons/fi';
 import { useState } from 'react';
 import { SignUpModal, LoginModal } from './AuthModals';
