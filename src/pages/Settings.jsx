@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { sendDataToBackend } from '../api/post';
-import React, { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 export default function Settings() {
   const { isDark } = useTheme();
