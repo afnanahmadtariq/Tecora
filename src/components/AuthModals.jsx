@@ -270,6 +270,7 @@ export function LoginModal({onLoginSuccess, isOpen, onClose, onSwitchToSignUp })
     const response = await sendDataToBackend(data, 'login');
     if (response.message == 'Logged in successfully'){
       localStorage.setItem('SSID', JSON.stringify(response.user_id))
+      localStorage.setItem('pic', response.profilepic)
       onLoginSuccess(response.profilepic);
     }
   };
