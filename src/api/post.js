@@ -1,20 +1,25 @@
-export const sendDataToBackend = (data, path) => {
-    fetch(import.meta.env.VITE_BACKEND_URL+'/api/'+path, {
+export const sendDataToBackend = async (data, path) => {
+  try {
+    const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/api/' + path, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data), // Send the data as a JSON string
-    })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Success:', data);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+    });
+
+    // If the response is not OK, throw an error
+    // if (!response.ok) {
+    //   throw new Error('Network response was not ok');
+    // }
+
+    // Parse the JSON response and return it
+    const responseData = await response.json();
+    console.log('Success:', responseData);
+    return responseData;
+  } catch (error) {
+    console.error('Error:', error);
+    // Optionally, return some error data or throw error
+    return null;  // Or return an error message, depending on your use case
   }
-  
-
-
-  
+};

@@ -21,4 +21,13 @@ export const fetchQueries = async () => {
     }
   };
   
-  
+
+export const fetchQueryById = async (queryId) => {
+  const response = await fetch(import.meta.env.VITE_BACKEND_URL+`/api/queries/1`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch query details');
+  }
+  const data = await response.json();
+  console.log("it is: ", data);
+  return data;
+};

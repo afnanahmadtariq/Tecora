@@ -9,6 +9,11 @@ export default function Navbar() {
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [isPostOpen, setIsPostOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [profilepic, setprofilepic] = useState("https://robohash.org/example");
+  
+
+  // Assuming you have a way to check if the user is logged in (e.g., through context or state)
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // Change this based on your login state
 
   const handleSwitchToLogin = () => {
     setIsSignUpOpen(false);
@@ -18,6 +23,18 @@ export default function Navbar() {
   const handleSwitchToSignUp = () => {
     setIsLoginOpen(false);
     setIsSignUpOpen(true);
+  };
+
+  const handleProfileClick = () => {
+    // Open the profile settings (this could be a modal or navigate to a settings page)
+    alert('Opening Profile Settings...');
+  };
+
+  const handleLoginSuccess = (pic) => {
+    setIsLoggedIn(true); // Update the state when login is successful
+    setprofilepic(pic);
+    console.log('Login successful! State updated in parent.');
+    setIsLoginOpen(false);
   };
 
   return (
@@ -48,29 +65,47 @@ export default function Navbar() {
             >
               {isDark ? <FiSun className="h-5 w-5 text-gray-100" /> : <FiMoon className="h-5 w-5" />}
             </button>
-            <button
-              onClick={() => setIsSignUpOpen(true)}
-              className="bg-[#38BDF8] text-white px-4 py-2 rounded-md hover:bg-blue-500 transition-colors"
-            >
-              Sign Up
-            </button>
+
+            {/* Conditionally render based on login status */}
+            {isLoggedIn ? (
+              <div
+                onClick={handleProfileClick}
+                className="w-10 h-10 rounded-full bg-gray-300 cursor-pointer hover:ring-2 hover:ring-blue-500"
+              >
+                {/* Replace with user's profile image */}
+                <img
+                  src={profilepic} // Replace with dynamic profile image URL
+                  alt="Profile"
+                  className="w-full h-full rounded-full object-cover"
+                />
+              </div>
+            ) : (
+              <button
+                onClick={() => setIsSignUpOpen(true)}
+                className="bg-[#38BDF8] text-white px-4 py-2 rounded-md hover:bg-blue-500 transition-colors"
+              >
+                Sign Up
+              </button>
+            )}
           </div>
         </div>
       </nav>
 
-      <SignUpModal 
-        isOpen={isSignUpOpen} 
+      <SignUpModal
+        isOpen={isSignUpOpen}
         onClose={() => setIsSignUpOpen(false)}
         onSwitchToLogin={handleSwitchToLogin}
       />
-      <PostModal 
-        isOpen={isPostOpen} 
+      <PostModal
+        isOpen={isPostOpen}
         onClose={() => setIsPostOpen(false)}
       />
-      <LoginModal 
-        isOpen={isLoginOpen} 
+      <LoginModal
+        onLoginSuccess={handleLoginSuccess}
+        isOpen={isLoginOpen}
         onClose={() => setIsLoginOpen(false)}
         onSwitchToSignUp={handleSwitchToSignUp}
+        // onSubmit={handleLoginSuccess}
       />
     </>
   );

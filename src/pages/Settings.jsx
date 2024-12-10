@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { sendDataToBackend } from '../api/post';
 
+
 export default function Settings() {
   const { isDark } = useTheme();
   
@@ -30,20 +31,19 @@ export default function Settings() {
   };
 
   // Handle save functionality
-  const handleSave = () => {
+  const handleSave = async () => {
     const profileData = {
       username,
       email,
       password, // This could be handled as a separate change (e.g., through a password reset flow)
       bio,
-      profile_pic: profilePic,
+      profile_pic: profilePic ,
       expertise,
       social_links: socialLinks
     };
-    sendDataToBackend(profileData, 'create-user');
+    sendDataToBackend(profileData, 'update-user');
     console.log("Profile data to be sent to backend:", profileData);
     
-    // Add logic here to send `profileData` to the backend (e.g., using fetch or axios)
   };
 
   return (

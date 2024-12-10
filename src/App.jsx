@@ -9,6 +9,7 @@ import Topics from './pages/Topics';
 import Settings from './pages/Settings';
 import useThemeFavicon from '../useThemeFavicon';
 import { ThemeProvider } from './context/ThemeContext';
+import QueryPage from './pages/QueryPage';
 
 function App() {
   useThemeFavicon();
@@ -27,6 +28,7 @@ function App() {
                 <Route path="/queries" element={<Queries />} />
                 <Route path="/topics" element={<Topics />} />
                 <Route path="/settings" element={<Settings />} />
+                <Route path="/queries/:queryId" element={<QueryPage />} />
               </Routes>
             </main>
           </div>

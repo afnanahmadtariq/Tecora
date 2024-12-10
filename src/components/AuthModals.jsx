@@ -1,6 +1,7 @@
-import { Fragment, useState, forwardRef } from 'react';
+import { Fragment, useState, forwardRef, useEffect } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { FiX, FiEye, FiEyeOff } from 'react-icons/fi';
+import { sendDataToBackend } from '../api/post';
 
 const ModalOverlay = forwardRef(({ children }, ref) => (
   <div ref={ref} className="fixed inset-0 overflow-y-auto">
@@ -20,6 +21,73 @@ ModalOverlay.displayName = 'ModalOverlay';
 export function SignUpModal({ isOpen, onClose, onSwitchToLogin }) {
   const [showPassword, setShowPassword] = useState(false);
   const [showRetypePassword, setShowRetypePassword] = useState(false);
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [retypePassword, setRetypePassword] = useState('');
+  const [designation, setDesignation] = useState('');
+
+  const [usernameError, setUsernameError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [retypePasswordError, setRetypePasswordError] = useState('');
+
+  // Regex for password strength check
+  const passwordStrengthRegEx = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!$%^&*?])[A-Za-z\d!$%^&*?]{8,}$/;
+
+  // Validate username
+  useEffect(() => {
+    if (username && username.length < 3) {
+      setUsernameError('Username must be at least 3 characters long.');
+    } else {
+      setUsernameError('');
+    }
+  }, [username]);
+
+  // Validate email format
+  useEffect(() => {
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if (email && !emailPattern.test(email)) {
+      setEmailError('Please enter a valid email address.');
+    } else {
+      setEmailError('');
+    }
+  }, [email]);
+
+  // Validate password strength
+  useEffect(() => {
+    if (password && !passwordStrengthRegEx.test(password)) {
+      setPasswordError('Password must be at least 8 characters long, contain a letter, a number, and a special character.');
+    } else {
+      setPasswordError('');
+    }
+  }, [password]);
+
+  // Check if passwords match
+  useEffect(() => {
+    if (retypePassword && retypePassword !== password) {
+      setRetypePasswordError('Passwords do not match.');
+    } else {
+      setRetypePasswordError('');
+    }
+  }, [retypePassword, password]);
+
+  // Submit the form
+  const handleSubmit = () => {
+    if (usernameError || emailError || passwordError || retypePasswordError) {
+      alert('Please fix the errors before submitting.');
+      return;
+    }
+
+    const data = {
+      username,
+      email,
+      password,
+      designation
+    };
+
+    sendDataToBackend(data, 'create-user');
+  };
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -65,16 +133,32 @@ export function SignUpModal({ isOpen, onClose, onSwitchToLogin }) {
               <div className="space-y-4">
                 <div>
                   <input
-                    type="email"
-                    placeholder="Enter Email"
+                    type="text"
+                    placeholder="Enter Username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 dark:text-white"
                   />
+                  {usernameError && <p className="text-red-500 text-sm">{usernameError}</p>}
+                </div>
+
+                <div>
+                  <input
+                    type="email"
+                    placeholder="Enter Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 dark:text-white"
+                  />
+                  {emailError && <p className="text-red-500 text-sm">{emailError}</p>}
                 </div>
 
                 <div className="relative">
                   <input
                     type={showPassword ? "text" : "password"}
                     placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 dark:text-white"
                   />
                   <button
@@ -84,12 +168,15 @@ export function SignUpModal({ isOpen, onClose, onSwitchToLogin }) {
                   >
                     {showPassword ? <FiEyeOff /> : <FiEye />}
                   </button>
+                  {passwordError && <p className="text-red-500 text-sm">{passwordError}</p>}
                 </div>
 
                 <div className="relative">
                   <input
                     type={showRetypePassword ? "text" : "password"}
                     placeholder="Retype Password"
+                    value={retypePassword}
+                    onChange={(e) => setRetypePassword(e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 dark:text-white"
                   />
                   <button
@@ -99,40 +186,37 @@ export function SignUpModal({ isOpen, onClose, onSwitchToLogin }) {
                   >
                     {showRetypePassword ? <FiEyeOff /> : <FiEye />}
                   </button>
+                  {retypePasswordError && <p className="text-red-500 text-sm">{retypePasswordError}</p>}
                 </div>
 
-                <select className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 dark:text-white">
+                <select
+                  value={designation}
+                  onChange={(e) => setDesignation(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 dark:text-white"
+                >
                   <option value="">Select Your Designation</option>
                   <option value="developer">Developer</option>
                   <option value="designer">Designer</option>
                   <option value="manager">Manager</option>
                 </select>
 
-                <button className="w-full bg-[#38BDF8] text-white py-2 rounded-md hover:bg-blue-500 transition-colors">
-                  Create an Account
+                <button
+                  onClick={handleSubmit}
+                  className="w-full bg-[#38BDF8] text-white py-2 rounded-md hover:bg-blue-500 transition-colors"
+                  disabled={usernameError || emailError || passwordError || retypePasswordError}
+                >
+                  Sign up
                 </button>
 
                 <div className="text-center text-sm text-gray-500 dark:text-gray-400">
-                  <p className="mb-4">Or Continue With</p>
-                  <div className="flex justify-center space-x-4">
-                    <button className="p-2 border border-gray-300 dark:border-gray-600 rounded-full hover:bg-gray-50 dark:hover:bg-gray-700 bg-white dark:bg-gray-800">
-                      <img src="/google.svg" alt="Google" className="w-5 h-5" />
-                    </button>
-                    <button className="p-2 border border-gray-300 dark:border-gray-600 rounded-full hover:bg-gray-50 dark:hover:bg-gray-700 bg-white dark:bg-gray-800">
-                      <img src="/github.svg" alt="GitHub" className="w-5 h-5" />
-                    </button>
-                    <button className="p-2 border border-gray-300 dark:border-gray-600 rounded-full hover:bg-gray-50 dark:hover:bg-gray-700 bg-white dark:bg-gray-800">
-                      <img src="/facebook.svg" alt="Facebook" className="w-5 h-5" />
-                    </button>
-                  </div>
-                </div>
-
-                <p className="text-center text-sm text-gray-500 dark:text-gray-400">
                   Already have an account?{' '}
-                  <button onClick={onSwitchToLogin} className="text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-500">
-                    Login here
+                  <button
+                    onClick={onSwitchToLogin}
+                    className="text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-500"
+                  >
+                    Log in
                   </button>
-                </p>
+                </div>
               </div>
             </div>
           </ModalOverlay>
@@ -142,8 +226,52 @@ export function SignUpModal({ isOpen, onClose, onSwitchToLogin }) {
   );
 }
 
-export function LoginModal({ isOpen, onClose, onSwitchToSignUp }) {
+export function LoginModal({onLoginSuccess, isOpen, onClose, onSwitchToSignUp }) {
   const [showPassword, setShowPassword] = useState(false);
+  
+  // const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  // const [usernameError, setUsernameError] = useState('');
+  const [emailError, setEmailError] = useState('');
+
+
+  // Validate username
+  // useEffect(() => {
+  //   if (username && username.length < 3) {
+  //     setUsernameError('Username must be at least 3 characters long.');
+  //   } else {
+  //     setUsernameError('');
+  //   }
+  // }, [username]);
+
+  // Validate email format
+  useEffect(() => {
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if (email && !emailPattern.test(email)) {
+      setEmailError('Please enter a valid email address.');
+    } else {
+      setEmailError('');
+    }
+  }, [email]);
+
+
+  const signIn = async () => {
+    if (emailError) {
+      alert('Please fix the errors before submitting.');
+      return;
+    }
+
+    const data = {
+      email,
+      password,
+    };
+    const response = await sendDataToBackend(data, 'login');
+    if (response.message == 'Logged in successfully'  ){
+      onLoginSuccess(response.profilepic);
+    }
+  };
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -192,6 +320,7 @@ export function LoginModal({ isOpen, onClose, onSwitchToSignUp }) {
                     Email
                   </label>
                   <input
+                    onChange={(e) => setEmail(e.target.value)}
                     type="email"
                     placeholder="username@gmail.com"
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 dark:text-white"
@@ -209,6 +338,7 @@ export function LoginModal({ isOpen, onClose, onSwitchToSignUp }) {
                   </div>
                   <div className="relative">
                     <input
+                      onChange={(e) => setPassword(e.target.value)}
                       type={showPassword ? "text" : "password"}
                       placeholder="Password"
                       className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 dark:text-white"
@@ -223,7 +353,9 @@ export function LoginModal({ isOpen, onClose, onSwitchToSignUp }) {
                   </div>
                 </div>
 
-                <button className="w-full bg-[#38BDF8] text-white py-2 rounded-md hover:bg-blue-500 transition-colors">
+                <button 
+                  onClick={signIn}
+                  className="w-full bg-[#38BDF8] text-white py-2 rounded-md hover:bg-blue-500 transition-colors">
                   Sign in
                 </button>
 
