@@ -7,6 +7,7 @@ export default function Settings() {
   const { isDark } = useTheme();
   
   // Profile state variables
+  const [userID, setUserID] = useState(null);
   const [username, setUsername] = useState("User123");
   const [email, setEmail] = useState("user@example.com");
   const [password, setPassword] = useState("");
@@ -17,6 +18,19 @@ export default function Settings() {
     linkedin: "https://linkedin.com/in/user",
     github: "https://github.com/user"
   });
+
+  useEffect(()=>{
+    const userID = localStorage.getItem('SSID')
+
+    if(userID){
+      setUserID(Number(userID));
+    }
+    const pic = localStorage.getItem('pic')
+
+    if(pic){
+      setProfilePic(pic);
+    }
+  },[]);
 
   // Handle profile image change
   const handleImageChange = (e) => {
