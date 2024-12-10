@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import { FiSearch, FiMoon, FiSun } from 'react-icons/fi';
 import { useState } from 'react';
 import { SignUpModal, LoginModal } from './AuthModals';
@@ -12,13 +13,13 @@ export default function Navbar() {
   const [profilepic, setprofilepic] = useState("https://robohash.org/example");
 
   useEffect(()=>{
-  //   if (typeof window !== 'undefined') { // Checks if we're in the browser
-  //     const userID = localStorage.getItem('SSID')
+    if (typeof window !== 'undefined') { // Checks if we're in the browser
+      const userID = localStorage.getItem('SSID')
   
-  //     if(userID){
-  //       setIsLoginOpen(true);
-  //     }
-  //   }
+      if(userID){
+        setIsLoginOpen(true);
+      }
+    }
   },[]);
   
   // Assuming you have a way to check if the user is logged in (e.g., through context or state)
