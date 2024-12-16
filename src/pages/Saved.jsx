@@ -3,7 +3,7 @@ import { FiExternalLink } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import { fetchQueries } from '../api/queries'; 
 
-const tabs = ['All', 'Active', 'Solved'];
+const tabs = ['All', 'Posts', 'Project'];
 
 export default function Queries() {
   const [activeTab, setActiveTab] = useState('All');
@@ -18,7 +18,7 @@ export default function Queries() {
         const data = await fetchQueries();
         setQueries(data.queries);
       } catch (err) {
-        console.log('Failed to load queries. Please try again later.');
+        setError('Failed to load queries. Please try again later.');
       } finally {
         setLoading(false);
       }
@@ -30,8 +30,8 @@ export default function Queries() {
   // Filter queries based on activeTab
   const filteredQueries = queries.filter((query) => {
     if (activeTab === 'All') return true;
-    if (activeTab === 'Active') return !query.solved;
-    if (activeTab === 'Solved') return query.solved;
+    if (activeTab === 'Posts') return !query.solved;
+    if (activeTab === 'Project') return query.solved;
     return true;
   });
 
@@ -51,7 +51,7 @@ export default function Queries() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-8">My Queries</h1>
+      <h1 className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-8">Saved</h1>
 
       {/* Tab Navigation */}
       <div className="flex space-x-4 mb-6">

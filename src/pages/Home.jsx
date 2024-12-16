@@ -11,7 +11,7 @@ const services = [
 
 export default function Home() {
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-7xl mx-auto px-12">
       <section className="mb-20">
         <div className="flex items-center justify-between">
           <div className="max-w-2xl">

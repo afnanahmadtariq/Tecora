@@ -25,7 +25,6 @@ export function SignUpModal({ isOpen, onClose, onSwitchToLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [retypePassword, setRetypePassword] = useState('');
-  const [designation, setDesignation] = useState('');
 
   const [usernameError, setUsernameError] = useState('');
   const [emailError, setEmailError] = useState('');
@@ -73,7 +72,7 @@ export function SignUpModal({ isOpen, onClose, onSwitchToLogin }) {
   }, [retypePassword, password]);
 
   // Submit the form
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (usernameError || emailError || passwordError || retypePasswordError) {
       alert('Please fix the errors before submitting.');
       return;
@@ -82,12 +81,20 @@ export function SignUpModal({ isOpen, onClose, onSwitchToLogin }) {
     const data = {
       username,
       email,
-      password,
-      designation
+      password
     };
 
-    sendDataToBackend(data, 'create-user');
-  };
+    const res = await sendDataToBackend(data, 'user/register');
+
+    if (res.status === 201) {
+      setUsername("");
+      setEmail("");
+      setPassword("");
+      setRetypePassword("");
+      onSwitchToLogin();
+    }
+
+    }
 
   return (
     <Transition appear show={isOpen} as={Fragment}>
@@ -117,8 +124,8 @@ export function SignUpModal({ isOpen, onClose, onSwitchToLogin }) {
             <div className="p-6">
               <div className="flex items-center justify-between mb-6">
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Tecora</h3>
-                  <Dialog.Title className="text-2xl font-bold text-gray-900 dark:text-white">
+                  <h3 className="text-xl font-semibold text-blue-600 dark:text-blue-400">Tecora</h3>
+                  <Dialog.Title className="text-3xl font-bold text-gray-900 dark:text-white">
                     Sign up
                   </Dialog.Title>
                 </div>
@@ -189,16 +196,6 @@ export function SignUpModal({ isOpen, onClose, onSwitchToLogin }) {
                   {retypePasswordError && <p className="text-red-500 text-sm">{retypePasswordError}</p>}
                 </div>
 
-                <select
-                  value={designation}
-                  onChange={(e) => setDesignation(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 dark:text-white"
-                >
-                  <option value="">Select Your Designation</option>
-                  <option value="developer">Developer</option>
-                  <option value="designer">Designer</option>
-                  <option value="manager">Manager</option>
-                </select>
 
                 <button
                   onClick={handleSubmit}
@@ -207,6 +204,21 @@ export function SignUpModal({ isOpen, onClose, onSwitchToLogin }) {
                 >
                   Sign up
                 </button>
+
+                <div className="text-center text-sm text-gray-500 dark:text-gray-400">
+                  <p className="mb-4">Or Continue With</p>
+                  <div className="flex justify-center space-x-4">
+                    <button className="p-2 border border-gray-300 dark:border-gray-600 rounded-full hover:bg-gray-50 dark:hover:bg-gray-700 bg-white dark:bg-gray-800">
+                      <img src="/google.svg" alt="Google" className="w-5 h-5" />
+                    </button>
+                    <button className="p-2 border border-gray-300 dark:border-gray-600 rounded-full hover:bg-gray-50 dark:hover:bg-gray-700 bg-white dark:bg-gray-800">
+                      <img src="/github.svg" alt="GitHub" className="w-5 h-5" />
+                    </button>
+                    <button className="p-2 border border-gray-300 dark:border-gray-600 rounded-full hover:bg-gray-50 dark:hover:bg-gray-700 bg-white dark:bg-gray-800">
+                      <img src="/facebook.svg" alt="Facebook" className="w-5 h-5" />
+                    </button>
+                  </div>
+                </div>
 
                 <div className="text-center text-sm text-gray-500 dark:text-gray-400">
                   Already have an account?{' '}
@@ -267,7 +279,7 @@ export function LoginModal({onLoginSuccess, isOpen, onClose, onSwitchToSignUp })
       email,
       password,
     };
-    const response = await sendDataToBackend(data, 'login');
+    const response = await sendDataToBackend(data, 'user/login');
     if (response.message == 'Logged in successfully'){
       localStorage.setItem('SSID', JSON.stringify(response.user_id))
       localStorage.setItem('pic', response.profilepic)
@@ -303,8 +315,8 @@ export function LoginModal({onLoginSuccess, isOpen, onClose, onSwitchToSignUp })
             <div className="p-6">
               <div className="flex items-center justify-between mb-6">
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Tecora</h3>
-                  <Dialog.Title className="text-2xl font-bold text-gray-900 dark:text-white">
+                  <h3 className="text-xl font-semibold text-blue-600 dark:text-blue-400">Tecora</h3>
+                  <Dialog.Title className="text-3xl font-bold text-gray-900 dark:text-white">
                     Login
                   </Dialog.Title>
                 </div>

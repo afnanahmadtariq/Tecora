@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { FiCompass, FiFolder, FiHelpCircle, FiGlobe, FiAward, FiSettings } from 'react-icons/fi';
+import { FiCompass, FiFolder, FiHelpCircle, FiGlobe, FiAward, FiBookmark, FiSettings } from 'react-icons/fi';
 import clsx from 'clsx';
 import { useTheme } from '../context/ThemeContext';
 
@@ -9,18 +9,15 @@ const navigation = [
   { name: 'Queries', icon: FiHelpCircle, href: '/queries' },
   { name: 'Topics', icon: FiGlobe, href: '/topics' },
   { name: 'Top Experts', icon: FiAward, href: '/experts' },
+  { name: 'Saved', icon: FiBookmark, href: '/saved' },
   { name: 'Settings', icon: FiSettings, href: '/settings' },
 ];
 
 export default function Sidebar() {
   const location = useLocation();
-  const { isDark } = useTheme();
 
   return (
-    <aside className="sticky top-0 h-screen w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 px-4 py-6 overflow-y-auto transition-colors duration-200">
-      <Link to="/" className="flex items-center mb-8">
-        <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">Tecora</span>
-      </Link>
+    <aside className="sticky top-0 min-h-screen w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 px-4 py-6 overflow-y-hidden transition-colors duration-200">
       <nav className="space-y-1">
         {navigation.map((item) => {
           const Icon = item.icon;

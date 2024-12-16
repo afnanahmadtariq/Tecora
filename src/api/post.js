@@ -14,9 +14,7 @@ export const sendDataToBackend = async (data, path) => {
     // }
 
     // Parse the JSON response and return it
-    const responseData = await response.json();
-    console.log('Success:', responseData);
-    return responseData;
+    return response;
   } catch (error) {
     console.error('Error:', error);
     // Optionally, return some error data or throw error

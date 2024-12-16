@@ -1,10 +1,15 @@
 import { useState, useEffect } from 'react';
 import { FiExternalLink } from 'react-icons/fi';
-import { fetchProjects } from '../api/projects'; 
+import { fetchProjects } from '../api/projects';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+
+const tabs = ['All', 'Following', 'Not Following'];
 
 export default function Projects() {
+  const [activeTab, setActiveTab] = useState('All');
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();  // Initialize navigate function
 
   useEffect(() => {
     const getProjects = async () => {
@@ -12,7 +17,7 @@ export default function Projects() {
         const data = await fetchProjects();
         setProjects(data);
       } catch (err) {
-        setError('Failed to load projects. Please try again later.');
+        console.log('Failed to load projects. Please try again later.');
       } finally {
         setLoading(false);
       }
@@ -21,7 +26,13 @@ export default function Projects() {
     getProjects();
   }, []);
 
-  
+  const filteredProjects = projects.filter((project) => {
+    if (activeTab === 'All') return true;
+    if (activeTab === 'Following') return !project.following;
+    if (activeTab === 'Not Following') return project.notfollowing;
+    return true;
+  });
+
   if (loading) {
     return <p>Loading projects...</p>;
   }
@@ -29,10 +40,31 @@ export default function Projects() {
   return (
     <div>
       <h1 className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-8">Projects</h1>
+
+      {/* Tab Navigation */}
+      <div className="flex space-x-4 mb-6">
+        {tabs.map((tab) => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            className={`px-4 py-2 rounded-md transition-colors duration-200 ${
+              activeTab === tab
+                ? 'bg-blue-500 text-white'
+                : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+            }`}
+          >
+            {tab}
+          </button>
+        ))}
+      </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {projects.map((project) => (
-          <div key={project.id} className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm transition-colors duration-200">
+        {filteredProjects.map((project) => (
+          <div 
+            key={project.id} 
+            className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm transition-colors duration-200"
+            onClick={() => navigate(`/projects/${project.id}`)}  // Use navigate to route to the project details page
+          >
             <h3 className="text-lg font-medium text-blue-600 dark:text-blue-400 mb-2">
               {project.title}
             </h3>
