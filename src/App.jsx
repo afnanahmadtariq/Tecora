@@ -8,6 +8,7 @@ import ProjectDetails from './pages/ProjectPage';
 import Queries from './pages/Queries';
 import QueryPage from './pages/QueryPage';
 import Topics from './pages/Topics';
+import TopExperts from './pages/Experts';
 import Saved from './pages/Saved';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
@@ -33,6 +34,7 @@ function App() {
                 <Route path="/queries" element={<Queries />} />
                 <Route path="/queries/:queryId" element={<QueryPage />} />
                 <Route path="/topics" element={<Topics />} />
+                <Route path="/experts" element={<TopExperts/>} />
                 <Route path="/saved" element={<Saved />} />
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/settings" element={<Settings />} />

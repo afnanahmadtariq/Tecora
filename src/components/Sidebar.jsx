@@ -17,7 +17,9 @@ export default function Sidebar() {
   const location = useLocation();
 
   return (
-    <aside className="sticky top-0 min-h-screen w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 px-4 py-6 overflow-y-hidden transition-colors duration-200">
+    <aside className="sticky top-20 py-4 w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 px-4 py-6 transition-colors duration-200"
+    style={{ height: 'calc(100vh - 5rem)' }}
+    >
       <nav className="space-y-1">
         {navigation.map((item) => {
           const Icon = item.icon;
