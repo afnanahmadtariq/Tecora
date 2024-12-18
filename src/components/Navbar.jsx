@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link} from 'react-router-dom';
 import { FiSearch, FiMoon, FiSun } from 'react-icons/fi';
 import { SignUpModal, LoginModal } from './AuthModals';
-import { PostModal } from './PostModals';
+import { PostModal } from './PostModal';
 import { useTheme } from '../context/ThemeContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -110,12 +110,12 @@ export default function Navbar() {
               </div>
           </div>
           <div className="flex items-center space-x-4">
-            {/* <button
+            <button
               onClick={() => setIsPostOpen(true)}
               className="bg-[#38BDF8] text-white px-4 py-2 rounded-md hover:bg-blue-500 transition-colors"
             >
               Post Query
-            </button> */}
+            </button>
             <button
               onClick={toggleTheme}
               className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
