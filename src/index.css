@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+  /*Colors need to be edited accordingly (for both light and dark bg)*/
+  --bg-color-light: #fff;
+  --bg-color-dark: #000;
+  --primary-color-light: #3498db;
+  --primary-color-dark: #3498db;
+  --secondary-color-light: #2ecc71;
+  --secondary-color-dark: #2ecc71;
+  --accent-light: #302f2f;
+  --accent-dark: #cbc3c3;
+  --heading-light: #000;
+  --heading-dark: #fff;
+  --text-light: #504f4f;
+  --text-dark: #fff;
+}
