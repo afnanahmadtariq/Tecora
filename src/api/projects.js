@@ -20,21 +20,77 @@
 //       throw error;
 //     }
 //   };
-  
-  // api/projects.js
+
+// api/projects.js
 export const fetchProjects = async () => {
   // Simulating an API call
   return [
-    { id: 1, title: 'Project 1', description: 'Description for Project 1', following: true, notfollowing: false },
-    { id: 2, title: 'Project 2', description: 'Description for Project 2', following: false, notfollowing: true },
+    {
+      id: 1,
+      title: "Project 1",
+      description:
+        "This is an Html Project for learning basics of web Structure and Development",
+      following: true,
+      notfollowing: false,
+    },
+    {
+      id: 2,
+      title: "Project 1",
+      description:
+        "This is an Html Project for learning basics of web Structure and Development",
+      following: true,
+      notfollowing: false,
+    },
+    {
+      id: 3,
+      title: "Project 1",
+      description:
+        "This is an Html Project for learning basics of web Structure and Development",
+      following: true,
+      notfollowing: false,
+    },
+    {
+      id: 4,
+      title: "Project 1",
+      description:
+        "This is an Html Project for learning basics of web Structure and Development",
+      following: true,
+      notfollowing: false,
+    },
+    {
+      id: 5,
+      title: "Project 1",
+      description:
+        "This is an Html Project for learning basics of web Structure and Development",
+      following: true,
+      notfollowing: false,
+    },
   ];
 };
 
 export const fetchProjectDetails = async (id) => {
   // Simulating fetching details for a project
   const projects = [
-    { id: 1, title: 'Project 1', description: 'Description for Project 1', progress: 'In Progress', dateOfCreation: '2024-01-01', user: { username: 'JohnDoe', email: 'john@example.com', bio: 'Developer' }},
-    { id: 2, title: 'Project 2', description: 'Description for Project 2', progress: 'Completed', dateOfCreation: '2023-10-10', user: { username: 'JaneDoe', email: 'jane@example.com', bio: 'Designer' }},
+    {
+      id: 1,
+      title: "Project 1",
+      description: "Description for Project 1",
+      progress: "In Progress",
+      dateOfCreation: "2024-01-01",
+      user: {
+        username: "JohnDoe",
+        email: "john@example.com",
+        bio: "Developer",
+      },
+    },
+    {
+      id: 2,
+      title: "Project 2",
+      description: "Description for Project 2",
+      progress: "Completed",
+      dateOfCreation: "2023-10-10",
+      user: { username: "JaneDoe", email: "jane@example.com", bio: "Designer" },
+    },
   ];
   return projects.find((project) => project.id === parseInt(id));
 };
