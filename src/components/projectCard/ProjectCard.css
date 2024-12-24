@@ -1,0 +1,86 @@
+.project-title {
+  color: var(--primary-color-dark);
+}
+/* ProjectCard.css */
+.project-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border-radius: 20px;
+}
+
+.project-img-section {
+  width: 100%;
+  max-height: 50%;
+}
+.project-desc {
+  display: flex;
+  align-items: start;
+  justify-content: center;
+  flex-direction: column;
+  padding: 12px;
+  gap: 10px;
+  background-color: var(--accent-dark);
+  p {
+    font-size: 11px;
+    color: var(--p-dark);
+  }
+  .card-tags {
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 5px;
+    span {
+      font-size: 10px;
+      padding: 2px 4px;
+      /* background-color: --var(); */
+      border: 1px solid var(--primary-color-dark);
+      border-radius: 5px;
+      color: var(--p-dark);
+    }
+  }
+  .aura-open {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.aura-open {
+  .aura {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    color: var(--accent-dark);
+  }
+  p {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    svg {
+      fill: var(--p-dark);
+    }
+  }
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--secondary-color-dark);
+  }
+}
+.title-bmark {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+
+  h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+  }
+  span svg {
+    fill: var(--p-dark);
+  }
+}
