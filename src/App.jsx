@@ -21,7 +21,6 @@ function App() {
   useThemeFavicon();
   return (
     <ThemeProvider>
-<<<<<<< Updated upstream
       <UserProvider>
         <Router>
           <div className="flex-1 min-h-screen bg-blue-50/30 dark:bg-gray-900 transition-colors duration-200">
@@ -45,28 +44,6 @@ function App() {
                 </Routes>
               </main>
             </div>
-=======
-      <Router>
-        <div className="flex-1 min-h-screen bg-blue-50/30 dark:bg-gray-900 transition-colors duration-200">
-          <Navbar />
-          <div className="flex">
-            <Sidebar />
-            <main className="container mx-auto px-4 py-8 no-scrollbar">
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/explore" element={<Explore />} />
-                <Route path="/projects" element={<Projects />} />
-                <Route path="/projects/:projectId" element={<ProjectDetails />} />
-                <Route path="/queries" element={<Queries />} />
-                <Route path="/queries/:queryId" element={<QueryPage />} />
-                <Route path="/topics" element={<Topics />} />
-                <Route path="/saved" element={<Saved />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/settings" element={<Settings />} />
-                <Route path="/subscription" element={<Subscription />} />
-              </Routes>
-            </main>
->>>>>>> Stashed changes
           </div>
         </Router>
       </UserProvider>

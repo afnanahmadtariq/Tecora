@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 
-<<<<<<< Updated upstream
 export function Popup({ message, showPopup, isWarning }) {
-=======
-export function Popup({ message, showPopup }) {
->>>>>>> Stashed changes
   const [isVisible, setIsVisible] = useState(showPopup);
 
   useEffect(() => {
@@ -22,11 +18,7 @@ export function Popup({ message, showPopup }) {
   return (
     <>
       {showPopup && (
-<<<<<<< Updated upstream
         <div className={`fixed top-5 z-50 right-5 p-4 ${isWarning? 'bg-red-600' : 'bg-green-500'} text-white rounded-lg shadow-lg transition-opacity duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
-=======
-        <div className={`fixed top-5 z-50 right-5 p-4 bg-black text-white rounded-lg shadow-lg transition-opacity duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
->>>>>>> Stashed changes
           <p>{message}</p>
         </div>
       )}
