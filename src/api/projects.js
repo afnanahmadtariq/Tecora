@@ -2,7 +2,7 @@
 
 /**
  * Fetches the list of Projects from the backend.
- * @returns {Promise<Array>} A promise that resolves to an array of query objects.
+ * @returns {Promise<Array>} A promise that resolves to an array of post objects.
  * @throws Will throw an error if the API request fails.
  */
 

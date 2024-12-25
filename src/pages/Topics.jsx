@@ -45,10 +45,10 @@ export default function Topics() {
         </div>
 
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm mb-6 transition-colors duration-200">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Write your Query here</h2>
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Write your Post here</h2>
           <textarea
             className="w-full p-4 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white transition-colors duration-200"
-            placeholder="Write your query..."
+            placeholder="Write your post..."
             rows="3"
           ></textarea>
           <div className="flex justify-between items-center mt-4">
@@ -58,13 +58,13 @@ export default function Topics() {
               <button className="px-3 py-1 bg-gray-200 dark:bg-gray-700 rounded-lg text-gray-700 dark:text-gray-300">I</button>
             </div>
             <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors duration-200">
-              Post Query
+              New Post
             </button>
           </div>
         </div>
 
         <div className="flex items-center space-x-4 mb-6">
-          {['All', 'New Queries', 'Most Replied'].map((filter) => (
+          {['All', 'New Posts', 'Most Replied'].map((filter) => (
             <button
               key={filter}
               onClick={() => setSelectedFilter(filter)}

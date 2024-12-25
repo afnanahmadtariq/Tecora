@@ -7,7 +7,7 @@ import { useUser } from '../context/UserContext';
 const navigation = [
   { name: 'Explore', icon: FiCompass, href: '/explore', show: true },
   { name: 'Projects', icon: FiFolder, href: '/projects', show: true },
-  { name: 'Queries', icon: FiHelpCircle, href: '/queries', show: true },
+  { name: 'Posts', icon: FiHelpCircle, href: '/posts', show: true },
   { name: 'Topics', icon: FiGlobe, href: '/topics', show: true },
   { name: 'Top Experts', icon: FiAward, href: '/experts', show: true },
   { name: 'Saved', icon: FiBookmark, href: '/saved', show: false },

@@ -96,7 +96,7 @@ export default function Navbar() {
               onClick={() => setIsPostOpen(true)}
               className="bg-[#38BDF8] text-white px-4 py-2 rounded-md hover:bg-blue-500 transition-colors"
             >
-              Post Query
+              New Post
             </button>
             <button
               onClick={toggleTheme}

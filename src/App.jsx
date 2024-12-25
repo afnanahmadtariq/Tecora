@@ -5,8 +5,8 @@ import Home from './pages/Home';
 import Explore from './pages/Explore';
 import Projects from './pages/Projects';
 import ProjectDetails from './pages/ProjectPage';
-import Queries from './pages/Queries';
-import QueryPage from './pages/QueryPage';
+import Posts from './pages/Post';
+import PostPage from './pages/PostPage';
 import Topics from './pages/Topics';
 import TopExperts from './pages/Experts';
 import Saved from './pages/Saved';
@@ -33,8 +33,8 @@ function App() {
                   <Route path="/explore" element={<Explore />} />
                   <Route path="/projects" element={<Projects />} />
                   <Route path="/projects/:projectId" element={<ProjectDetails />} />
-                  <Route path="/queries" element={<Queries />} />
-                  <Route path="/queries/:queryId" element={<QueryPage />} />
+                  <Route path="/posts" element={<Posts />} />
+                  <Route path="/posts/:postId" element={<PostPage />} />
                   <Route path="/topics" element={<Topics />} />
                   <Route path="/experts" element={<TopExperts/>} />
                   <Route path="/saved" element={<Saved />} />

@@ -10,7 +10,7 @@ export default function ProjectPage() {
     date: "Apr 20, 2024",
     tags: ["Management", "Software Project", "Software Company"],
     description:
-      "In this project, I aim to master the process of building responsive websites that adapt seamlessly across devices, using modern frameworks like React and Tailwind CSS. I want to understand how to create layouts that look polished and professional on any screen size, from mobile phones to large desktops. This project will help me dive deeper into concepts like media queries, flexible grids, and component-based design, allowing me to develop web applications that provide a smooth user experience no matter the device. My goal is to build sites that are both functional and visually engaging using industry-leading tools.",
+      "In this project, I aim to master the process of building responsive websites that adapt seamlessly across devices, using modern frameworks like React and Tailwind CSS. I want to understand how to create layouts that look polished and professional on any screen size, from mobile phones to large desktops. This project will help me dive deeper into concepts like media posts, flexible grids, and component-based design, allowing me to develop web applications that provide a smooth user experience no matter the device. My goal is to build sites that are both functional and visually engaging using industry-leading tools.",
     questions: [
       {
         id: 1,
