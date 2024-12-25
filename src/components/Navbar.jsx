@@ -13,11 +13,6 @@ export default function Navbar() {
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [isPostOpen, setIsPostOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
-<<<<<<< Updated upstream
-=======
-  const [profilepic, setprofilepic] = useState("https://robohash.org/example");
-  const [isLoggedIn, setIsLoggedIn] = useState(false); 
->>>>>>> Stashed changes
   const [isMenuOpen, setIsMenuOpen] = useState(false); // To control the menu visibility
   const menuRef = useRef(null);
   const navigate = useNavigate();
