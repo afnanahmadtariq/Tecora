@@ -1,149 +1,293 @@
-import React, { useState } from 'react';
-import { PostModal } from '../components/PostModal';
+import React, { useState } from "react";
+import { PostModal } from "../components/PostModal";
+import Question from "../components/question/Question";
 
 export default function Explore() {
   const [posts, setPosts] = useState([
     {
       id: 1,
-      title: "What tools can help streamline project management for a remote team?",
+      username: "afnan",
+      title: "Developer at Comsats Uni",
+      questiontitle:
+        "What tools can help streamline project management for a remote team?",
       date: "Apr 20, 2024",
-      description: "Looking for recommendations on project management tools suitable for remote teams.",
+      description:
+        "Looking for recommendations on project management tools suitable for remote teams.",
       tags: ["Project Management", "Remote Work", "Collaboration"],
       upvotes: 15,
       downvotes: 2,
       replies: [
-        { id: 1, text: 'Some tool can be used', time: '12m', upvotes: 14, downvotes: 0, username: 'user1' },
-        { id: 2, text: 'Figma? or something...', time: '12m', upvotes: 8, downvotes: 1, username: 'user2' },
-        { id: 3, text: 'Use whatever you like', time: '12m', upvotes: 5, downvotes: 2, username: 'user3' },
+        {
+          id: 1,
+          text: "Some tool can be used",
+          time: "12m",
+          upvotes: 14,
+          downvotes: 0,
+          username: "user1",
+        },
+        {
+          id: 2,
+          text: "Figma? or something...",
+          time: "12m",
+          upvotes: 8,
+          downvotes: 1,
+          username: "user2",
+        },
+        {
+          id: 3,
+          text: "Use whatever you like",
+          time: "12m",
+          upvotes: 5,
+          downvotes: 2,
+          username: "user3",
+        },
       ],
     },
     {
       id: 2,
-      title: "What are the best strategies for staying productive while working remotely?",
+      username: "afnan",
+      title: "Developer at Comsats Uni",
+      questiontitle:
+        "What are the best strategies for staying productive while working remotely?",
       date: "Apr 22, 2024",
-      description: "Looking for productivity strategies that work well for remote workers.",
+      description:
+        "Looking for productivity strategies that work well for remote workers.",
       tags: ["Productivity", "Remote Work", "Work From Home"],
       upvotes: 22,
       downvotes: 3,
       replies: [
-        { id: 1, text: 'Stick to a structured routine', time: '10m', upvotes: 10, downvotes: 0, username: 'user4' },
-        { id: 2, text: 'Designate a specific workspace', time: '8m', upvotes: 7, downvotes: 1, username: 'user5' },
-        { id: 3, text: 'Take regular breaks to maintain focus', time: '5m', upvotes: 5, downvotes: 2, username: 'user6' },
+        {
+          id: 1,
+          text: "Stick to a structured routine",
+          time: "10m",
+          upvotes: 10,
+          downvotes: 0,
+          username: "user4",
+        },
+        {
+          id: 2,
+          text: "Designate a specific workspace",
+          time: "8m",
+          upvotes: 7,
+          downvotes: 1,
+          username: "user5",
+        },
+        {
+          id: 3,
+          text: "Take regular breaks to maintain focus",
+          time: "5m",
+          upvotes: 5,
+          downvotes: 2,
+          username: "user6",
+        },
       ],
     },
     {
       id: 3,
-      title: "How do you ensure clear communication in a distributed team environment?",
+      username: "aligee",
+      title: "UI/UX Designer at Comsats Uni",
+      questiontitle:
+        "How do you ensure clear communication in a distributed team environment?",
       date: "Apr 25, 2024",
-      description: "Looking for methods to improve communication in teams working remotely.",
+      description:
+        "Looking for methods to improve communication in teams working remotely.",
       tags: ["Communication", "Distributed Teams", "Collaboration"],
       upvotes: 18,
       downvotes: 1,
       replies: [
-        { id: 1, text: 'Regular video meetings are crucial', time: '15m', upvotes: 11, downvotes: 0, username: 'user7' },
-        { id: 2, text: 'Use communication tools like Slack or Microsoft Teams', time: '13m', upvotes: 6, downvotes: 1, username: 'user8' },
-        { id: 3, text: 'Encourage transparent and frequent updates', time: '10m', upvotes: 4, downvotes: 0, username: 'user9' },
+        {
+          id: 1,
+          text: "Regular video meetings are crucial",
+          time: "15m",
+          upvotes: 11,
+          downvotes: 0,
+          username: "user7",
+        },
+        {
+          id: 2,
+          text: "Use communication tools like Slack or Microsoft Teams",
+          time: "13m",
+          upvotes: 6,
+          downvotes: 1,
+          username: "user8",
+        },
+        {
+          id: 3,
+          text: "Encourage transparent and frequent updates",
+          time: "10m",
+          upvotes: 4,
+          downvotes: 0,
+          username: "user9",
+        },
       ],
     },
     {
       id: 4,
-      title: "Which tools are essential for effective time tracking for freelancers?",
+      username: "aligee",
+      title: "UI/UX Designer at Comsats Uni",
+      questiontitle:
+        "Which tools are essential for effective time tracking for freelancers?",
       date: "Apr 28, 2024",
-      description: "Seeking recommendations for time tracking tools that are effective for freelancers.",
+      description:
+        "Seeking recommendations for time tracking tools that are effective for freelancers.",
       tags: ["Time Tracking", "Freelancing", "Productivity Tools"],
       upvotes: 25,
       downvotes: 2,
       replies: [
-        { id: 1, text: 'Toggl Track is a great option', time: '14m', upvotes: 13, downvotes: 0, username: 'user10' },
-        { id: 2, text: 'Clockify works well and has free options', time: '12m', upvotes: 8, downvotes: 1, username: 'user11' },
-        { id: 3, text: 'RescueTime can track time spent on apps and websites', time: '10m', upvotes: 6, downvotes: 0, username: 'user12' },
+        {
+          id: 1,
+          text: "Toggl Track is a great option",
+          time: "14m",
+          upvotes: 13,
+          downvotes: 0,
+          username: "user10",
+        },
+        {
+          id: 2,
+          text: "Clockify works well and has free options",
+          time: "12m",
+          upvotes: 8,
+          downvotes: 1,
+          username: "user11",
+        },
+        {
+          id: 3,
+          text: "RescueTime can track time spent on apps and websites",
+          time: "10m",
+          upvotes: 6,
+          downvotes: 0,
+          username: "user12",
+        },
       ],
     },
     {
       id: 5,
-      title: "What strategies do you use for team building in remote settings?",
+      username: "aligee",
+      title: "UI/UX Designer at Comsats Uni",
+      questiontitle:
+        "What strategies do you use for team building in remote settings?",
       date: "Apr 30, 2024",
-      description: "Looking for creative ideas to foster team building while working remotely.",
+      description:
+        "Looking for creative ideas to foster team building while working remotely.",
       tags: ["Team Building", "Remote Work", "Collaboration"],
       upvotes: 30,
       downvotes: 4,
       replies: [
-        { id: 1, text: 'Virtual team-building activities like online games', time: '15m', upvotes: 15, downvotes: 0, username: 'user13' },
-        { id: 2, text: 'Organize regular virtual coffee breaks', time: '13m', upvotes: 9, downvotes: 1, username: 'user14' },
-        { id: 3, text: 'Host workshops and skill-sharing sessions', time: '11m', upvotes: 6, downvotes: 3, username: 'user15' },
+        {
+          id: 1,
+          text: "Virtual team-building activities like online games",
+          time: "15m",
+          upvotes: 15,
+          downvotes: 0,
+          username: "user13",
+        },
+        {
+          id: 2,
+          text: "Organize regular virtual coffee breaks",
+          time: "13m",
+          upvotes: 9,
+          downvotes: 1,
+          username: "user14",
+        },
+        {
+          id: 3,
+          text: "Host workshops and skill-sharing sessions",
+          time: "11m",
+          upvotes: 6,
+          downvotes: 3,
+          username: "user15",
+        },
       ],
-    },    
+    },
   ]);
 
   const [selectedPost, setSelectedPost] = useState(posts[0]);
-  const [replyText, setReplyText] = useState('');
+  const [replyText, setReplyText] = useState("");
   const [replyingTo, setReplyingTo] = useState(null);
   const [isPostModalOpen, setIsPostModalOpen] = useState(false);
 
   const handlePostVote = (postId, voteType) => {
-    setPosts(posts.map(post => {
-      if (post.id === postId) {
-        if (voteType === 'upvote' && post.upvotes < post.downvotes + post.upvotes + 1) {
-          return { ...post, upvotes: post.upvotes + 1 };
-        } else if (voteType === 'downvote' && post.downvotes < post.upvotes + post.downvotes + 1) {
-          return { ...post, downvotes: post.downvotes + 1 };
+    setPosts(
+      posts.map((post) => {
+        if (post.id === postId) {
+          if (
+            voteType === "upvote" &&
+            post.upvotes < post.downvotes + post.upvotes + 1
+          ) {
+            return { ...post, upvotes: post.upvotes + 1 };
+          } else if (
+            voteType === "downvote" &&
+            post.downvotes < post.upvotes + post.downvotes + 1
+          ) {
+            return { ...post, downvotes: post.downvotes + 1 };
+          }
         }
-      }
-      return post;
-    }));
+        return post;
+      })
+    );
     updateSelectedPost(postId);
   };
 
   const handleReplyVote = (postId, replyId, voteType) => {
-    setPosts(posts.map(post => {
-      if (post.id === postId) {
-        const updatedReplies = post.replies.map(reply => {
-          if (reply.id === replyId) {
-            if (voteType === 'upvote' && reply.upvotes < reply.downvotes + reply.upvotes + 1) {
-              return { ...reply, upvotes: reply.upvotes + 1 };
-            } else if (voteType === 'downvote' && reply.downvotes < reply.upvotes + reply.downvotes + 1) {
-              return { ...reply, downvotes: reply.downvotes + 1 };
+    setPosts(
+      posts.map((post) => {
+        if (post.id === postId) {
+          const updatedReplies = post.replies.map((reply) => {
+            if (reply.id === replyId) {
+              if (
+                voteType === "upvote" &&
+                reply.upvotes < reply.downvotes + reply.upvotes + 1
+              ) {
+                return { ...reply, upvotes: reply.upvotes + 1 };
+              } else if (
+                voteType === "downvote" &&
+                reply.downvotes < reply.upvotes + reply.downvotes + 1
+              ) {
+                return { ...reply, downvotes: reply.downvotes + 1 };
+              }
             }
-          }
-          return reply;
-        });
-        return { ...post, replies: updatedReplies };
-      }
-      return post;
-    }));
+            return reply;
+          });
+          return { ...post, replies: updatedReplies };
+        }
+        return post;
+      })
+    );
     updateSelectedPost(postId);
   };
 
-  const handleReply = (postId, username = '') => {
-    setSelectedPost(posts.find(post => post.id === postId));
+  const handleReply = (postId, username = "") => {
+    setSelectedPost(posts.find((post) => post.id === postId));
     setReplyingTo(postId);
-    setReplyText(username ? `@${username} ` : '');
+    setReplyText(username ? `@${username} ` : "");
   };
 
   const submitReply = (postId) => {
     if (replyText.trim()) {
-      setPosts(posts.map(post => {
-        if (post.id === postId) {
-          const newReply = {
-            id: post.replies.length + 1,
-            text: replyText,
-            time: 'Just now',
-            upvotes: 0,
-            downvotes: 0,
-            username: 'currentUser', // Replace with actual username when implemented
-          };
-          return { ...post, replies: [...post.replies, newReply] };
-        }
-        return post;
-      }));
-      setReplyText('');
+      setPosts(
+        posts.map((post) => {
+          if (post.id === postId) {
+            const newReply = {
+              id: post.replies.length + 1,
+              text: replyText,
+              time: "Just now",
+              upvotes: 0,
+              downvotes: 0,
+              username: "currentUser", // Replace with actual username when implemented
+            };
+            return { ...post, replies: [...post.replies, newReply] };
+          }
+          return post;
+        })
+      );
+      setReplyText("");
       setReplyingTo(null);
       updateSelectedPost(postId);
     }
   };
 
   const updateSelectedPost = (postId) => {
-    setSelectedPost(posts.find(post => post.id === postId));
+    setSelectedPost(posts.find((post) => post.id === postId));
   };
 
   const handleCreatePost = (postData) => {
@@ -181,14 +325,16 @@ export default function Explore() {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Left Section: Posts */}
           <div className="lg:col-span-3">
-            <h1 className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-8">Explore</h1>
+            <h1 className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-8">
+              Explore
+            </h1>
             <div className="space-y-4">
               {posts.map((post) => (
                 <div
                   key={post.id}
                   className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200"
                 >
-                  <div className="flex justify-between items-start">
+                  {/* <div className="flex justify-between items-start">
                     <div>
                       <p className="text-sm text-gray-500 dark:text-gray-400">{post.date}</p>
                       <h3 className="text-lg font-medium text-gray-900 dark:text-white my-2">
@@ -241,7 +387,8 @@ export default function Explore() {
                         </button>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
+                  <Question post={post} />
                 </div>
               ))}
             </div>
@@ -250,13 +397,15 @@ export default function Explore() {
           {/* Right Section: Replies */}
           <div
             className="lg:col-span-1 bg-white dark:bg-gray-800 rounded-lg shadow-sm transition-colors duration-200 sticky top-24 py-4 flex flex-col justify-between overflow-hidden"
-            style={{ maxHeight: 'calc(100vh - 6rem)' }}
+            style={{ maxHeight: "calc(100vh - 6rem)" }}
           >
             {selectedPost && (
               <>
                 {/* Header Section */}
                 <div className="p-6 border-b">
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">{selectedPost.date}</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
+                    {selectedPost.date}
+                  </p>
                   <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
                     {selectedPost.title}
                   </h2>
@@ -289,25 +438,57 @@ export default function Explore() {
                         <div className="flex items-center text-xs text-gray-400 space-x-4">
                           <span>{reply.time}</span>
                           <button
-                            onClick={() => handleReplyVote(selectedPost.id, reply.id, 'upvote')}
+                            onClick={() =>
+                              handleReplyVote(
+                                selectedPost.id,
+                                reply.id,
+                                "upvote"
+                              )
+                            }
                             className="flex items-center space-x-1 text-gray-500 hover:text-blue-500 transition duration-200"
                           >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                              <path fillRule="evenodd" d="M3.293 9.707a1 1 0 010-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L4.707 9.707a1 1 0 01-1.414 0z" clipRule="evenodd" />
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-4 w-4"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M3.293 9.707a1 1 0 010-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L4.707 9.707a1 1 0 01-1.414 0z"
+                                clipRule="evenodd"
+                              />
                             </svg>
                             <span>{reply.upvotes}</span>
                           </button>
                           <button
-                            onClick={() => handleReplyVote(selectedPost.id, reply.id, 'downvote')}
+                            onClick={() =>
+                              handleReplyVote(
+                                selectedPost.id,
+                                reply.id,
+                                "downvote"
+                              )
+                            }
                             className="flex items-center space-x-1 text-gray-500 hover:text-red-500 transition duration-200"
                           >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                              <path fillRule="evenodd" d="M16.707 10.293a1 1 0 010 1.414l-6 6a1 1 0 01-1.414 0l-6-6a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l4.293-4.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-4 w-4"
+                              viewBox="0 0 20 20"
+                              fill="currentColor"
+                            >
+                              <path
+                                fillRule="evenodd"
+                                d="M16.707 10.293a1 1 0 010 1.414l-6 6a1 1 0 01-1.414 0l-6-6a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l4.293-4.293a1 1 0 011.414 0z"
+                                clipRule="evenodd"
+                              />
                             </svg>
                             <span>{reply.downvotes}</span>
                           </button>
                           <button
-                            onClick={() => handleReply(selectedPost.id, reply.username)}
+                            onClick={() =>
+                              handleReply(selectedPost.id, reply.username)
+                            }
                             className="text-gray-500 hover:text-green-500 transition duration-200"
                           >
                             Reply
@@ -333,8 +514,17 @@ export default function Explore() {
                       className="p-2 bg-blue-500 hover:bg-blue-600 text-white rounded-r-md flex items-center justify-center"
                       title="Send Reply"
                     >
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                          clipRule="evenodd"
+                        />
                       </svg>
                     </button>
                   </div>
@@ -347,4 +537,3 @@ export default function Explore() {
     </div>
   );
 }
-
