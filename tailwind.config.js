@@ -11,6 +11,9 @@ export default {
         center: true,
         padding: '1rem',
       },
+      transitionProperty: {
+        'opacity': 'opacity',
+      },
     },
   },
   plugins: [],

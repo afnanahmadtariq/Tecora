@@ -5,31 +5,22 @@ import { SignUpModal, LoginModal } from './AuthModals';
 import { PostModal } from './PostModal';
 import { useTheme } from '../context/ThemeContext';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../context/UserContext';
 
 export default function Navbar() {
+  const { isLoggedIn, logout, getProfilePic } = useUser();
   const { isDark, toggleTheme } = useTheme();
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [isPostOpen, setIsPostOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+<<<<<<< Updated upstream
+=======
   const [profilepic, setprofilepic] = useState("https://robohash.org/example");
-  const [isLoggedIn, setIsLoggedIn] = useState(true); 
+  const [isLoggedIn, setIsLoggedIn] = useState(false); 
+>>>>>>> Stashed changes
   const [isMenuOpen, setIsMenuOpen] = useState(false); // To control the menu visibility
   const menuRef = useRef(null);
   const navigate = useNavigate();
-
-  useEffect(()=>{
-    if (typeof window !== 'undefined') { // Checks if we're in the browser
-      const userID = localStorage.getItem('SSID')
-  
-      if(userID){
-        setIsLoggedIn(true);
-        const pic = localStorage.getItem('pic')
-        setprofilepic(pic);
-      }
-    }
-  },[]);
-  
-
   const handleSwitchToLogin = () => {
     setIsSignUpOpen(false);
     setIsLoginOpen(true);
@@ -40,10 +31,7 @@ export default function Navbar() {
     setIsSignUpOpen(true);
   };
 
-  const handleLoginSuccess = (pic) => {
-    setIsLoggedIn(true); // Update the state when login is successful
-    setprofilepic(pic);
-    console.log('Login successful! State updated in parent.');
+  const handleLoginSuccess = () => {
     setIsLoginOpen(false);
   };
 
@@ -73,10 +61,9 @@ export default function Navbar() {
 
   const handleLogout = () => {
     // Handle logout logic here
-    setIsLoggedIn(false);
+    logout();
     setIsMenuOpen(false);
-    localStorage.removeItem('SSID');
-    localStorage.removeItem('pic');
+    navigate("/");
   };
 
   const handleOutsideClick = (e) => {
@@ -133,7 +120,7 @@ export default function Navbar() {
                 >
                   {/* Replace with user's profile image */}
                   <img
-                    src={profilepic} // Replace with dynamic profile image URL
+                    src={getProfilePic()} // Replace with dynamic profile image URL
                     alt="Profile"
                     className="w-full h-full rounded-full object-cover"
                   />
@@ -204,7 +191,6 @@ export default function Navbar() {
         isOpen={isLoginOpen}
         onClose={() => setIsLoginOpen(false)}
         onSwitchToSignUp={handleSwitchToSignUp}
-        // onSubmit={handleLoginSuccess}
       />
     </>
   );

@@ -2,37 +2,23 @@ import { useState } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { sendDataToBackend } from '../api/post';
 import { useEffect } from 'react';
+import { useUser } from '../context/UserContext';
 
 export default function Settings() {
   const { isDark } = useTheme();
+  const { user, getProfilePic } = useUser();
   
   // Profile state variables
-  const [userID, setUserID] = useState(null);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [bio, setBio] = useState("");
-  const [profilePic, setProfilePic] = useState(null);
+  const [profilePic, setProfilePic] = useState(getProfilePic());
   const [expertise, setExpertise] = useState("Web Development");
   const [socialLinks, setSocialLinks] = useState({
     linkedin: "https://linkedin.com/in/user",
     github: "https://github.com/user"
   });
-
-  useEffect(()=>{
-    if (typeof window !== 'undefined') { // Checks if we're in the browser
-      const userID = localStorage.getItem('SSID')
-  
-      if(userID){
-        setUserID(Number(userID));
-      }
-      const pic = localStorage.getItem('pic')
-  
-      if(pic){
-        setProfilePic(pic);
-      }
-    }
-  },[]);
 
   // Handle profile image change
   const handleImageChange = (e) => {
@@ -104,7 +90,7 @@ export default function Settings() {
                 className="border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 text-sm w-2/3 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="Change username"
+                placeholder={user? user.username : 'Set New username'}
               />
             </div>
             <div className="flex justify-between items-center">
@@ -114,7 +100,7 @@ export default function Settings() {
                 className="border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 text-sm w-2/3 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Change email"
+                placeholder={user? user.email : 'Set New Email'}
               />
             </div>
             <div className="flex justify-between items-center">
@@ -133,7 +119,7 @@ export default function Settings() {
                 className="border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 text-sm w-2/3 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 value={bio}
                 onChange={(e) => setBio(e.target.value)}
-                placeholder="Tell us about yourself"
+                placeholder={user? user.bio? user.bio : 'No Bio Set' : "Add New Bio"}
               />
             </div>
           </div>
