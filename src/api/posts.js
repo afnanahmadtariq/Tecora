@@ -6,6 +6,58 @@
  * @throws Will throw an error if the API request fails.
  */
 
+export const fetchPosts = async () => {
+  const token  = localStorage.getItem('token');
+  if (!token) {
+    throw new Error('No authorization token found');
+  }
+  try {
+    console.log(import.meta.env.VITE_BACKEND_URL);
+    const response = await fetch(import.meta.env.VITE_BACKEND_URL+'/api/feed/posts',{
+      method: 'GET', // Default method is 'GET', you can change it if needed
+      headers: {
+        'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
+        'Content-Type': 'application/json', // Set content type (optional)
+      }
+    });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch posts: ${response.statusText}`);
+    }
+    const data = await response.json();
+    console.log("ye aya", data.feed);
+    return await data.feed;
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    throw error;
+  }
+};
+
+export const fetchReply = async () => {
+  const token  = localStorage.getItem('token');
+  if (!token) {
+    throw new Error('No authorization token found');
+  }
+  try {
+    console.log(import.meta.env.VITE_BACKEND_URL);
+    const response = await fetch(import.meta.env.VITE_BACKEND_URL+'/api/posts/getreplies',{
+      method: 'GET', // Default method is 'GET', you can change it if needed
+      headers: {
+        'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
+        'Content-Type': 'application/json', // Set content type (optional)
+      }
+    });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch replies: ${response.statusText}`);
+    }
+    const data = await response.json();
+    console.log("ye aya", data.feed);
+    return await data.feed;
+  } catch (error) {
+    console.error('Error fetching replies:', error);
+    throw error;
+  }
+};
+
 export const fetchMyPosts = async () => {
   const token  = localStorage.getItem('token');
   if (!token) {
@@ -56,3 +108,30 @@ export const fetchPostById = async (postId) => {
   console.log("it is: ", data);
   return data;
 };
+
+export const createPost = async(data) => {
+  const token  = localStorage.getItem('token');
+  try {
+    const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/api/posts/create', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data), // Send the data as a JSON string
+    });
+
+    // If the response is not OK, throw an error
+    // if (!response.ok) {
+    //   throw new Error('Network response was not ok');
+    // }
+
+    // Parse the JSON response and return it
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.error('Error:', error);
+    // Optionally, return some error data or throw error
+    return null;  // Or return an error message, depending on your use case
+  }
+}

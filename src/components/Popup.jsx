@@ -9,7 +9,7 @@ export function Popup({ message, showPopup, isWarning }) {
       setIsVisible(showPopup); 
       const timer = setTimeout(() => {
         setIsVisible(false);
-      }, 3000); // Popup will disappear after 3 seconds
+      }, 1000); // Popup will disappear after 3 seconds
 
       return () => clearTimeout(timer); // Cleanup timer on component unmount
     }
@@ -18,7 +18,7 @@ export function Popup({ message, showPopup, isWarning }) {
   return (
     <>
       {showPopup && (
-        <div className={`fixed top-5 z-50 right-5 p-4 ${isWarning? 'bg-red-600' : 'bg-green-500'} text-white rounded-lg shadow-lg transition-opacity duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+        <div className={`fixed top-15 z-50 right-5 p-4 ${isWarning? 'bg-red-600' : 'bg-green-500'} text-white rounded-lg shadow-lg transition-opacity duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
           <p>{message}</p>
         </div>
       )}

@@ -37,12 +37,12 @@ export default function Posts() {
 
   // Navigate to specific post page
   const handleCardClick = (postId) => {
-    navigate(`/myposts/${postId}`); // Use navigate
+    navigate(`/posts/${postId}`); // Use navigate
   };
 
   // Navigate to post page and scroll to answers section
   const handleViewAnswersClick = (postId) => {
-    navigate(`/myposts/${postId}#answers`); // Use navigate
+    navigate(`/posts/${postId}#answers`); // Use navigate
   };
 
   if (loading) {

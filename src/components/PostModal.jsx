@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
 import { Modal } from './Modal';
+import { createPost } from '../api/posts';
 
-export function PostModal({ isOpen, onClose, onSubmit }) {
+export function PostModal({ isOpen, onClose }) {
   const [activeTab, setActiveTab] = useState("post");
   const [postContent, setPostContent] = useState("");
   const [mediaUrl, setMediaUrl] = useState(""); // This will store the file or URL
   const [question, setQuestion] = useState("");
   const [pollOptions, setPollOptions] = useState(["", ""]);
-  const [title, setTitle] = useState(""); // Title field
+  const [title, setTitle] = useState(""); 
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     let postData;
     switch (activeTab) {
       case "post":
@@ -24,7 +25,7 @@ export function PostModal({ isOpen, onClose, onSubmit }) {
       default:
         return;
     }
-    onSubmit(postData);
+    await createPost(postData);
     onClose();
   };
 
