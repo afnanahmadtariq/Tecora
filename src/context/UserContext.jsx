@@ -11,7 +11,7 @@ export function UserProvider({ children }) {
   const [profilePic, setProfilePic] = useState("https://www.w3schools.com/w3images/avatar2.png");
 
   // Function to handle login (store token and user details)
-  const login = (newToken, userDetails) => {
+  const login = (newToken) => {
     localStorage.setItem('token', newToken);
     setToken(newToken);
   };

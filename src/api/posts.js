@@ -6,24 +6,49 @@
  * @throws Will throw an error if the API request fails.
  */
 
-export const fetchPosts = async () => {
-    try {
-        console.log(import.meta.env.VITE_BACKEND_URL);
-      const response = await fetch(import.meta.env.VITE_BACKEND_URL+'/api/feed/posts'); // Replace with your actual API endpoint if different
-      if (!response.ok) {
-        throw new Error(`Failed to fetch posts: ${response.statusText}`);
+export const fetchMyPosts = async () => {
+  const token  = localStorage.getItem('token');
+  if (!token) {
+    throw new Error('No authorization token found');
+  }
+  try {
+    console.log(import.meta.env.VITE_BACKEND_URL);
+    const response = await fetch(import.meta.env.VITE_BACKEND_URL+'/api/posts/myposts',{
+      method: 'GET', // Default method is 'GET', you can change it if needed
+      headers: {
+        'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
+        'Content-Type': 'application/json', // Set content type (optional)
       }
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      console.error('Error fetching posts:', error);
-      throw error;
+    });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch posts: ${response.statusText}`);
     }
-  };
-  
+    const data = await response.json();
+    console.log("", data.myposts);
+    return data.myposts;
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    throw error;
+  }
+};
+
+export const fetchSavedPosts = async () => {
+  try {
+    console.log(import.meta.env.VITE_BACKEND_URL);
+    const response = await fetch(import.meta.env.VITE_BACKEND_URL+'/api/feed/posts'); // Replace with your actual API endpoint if different
+    if (!response.ok) {
+      throw new Error(`Failed to fetch posts: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error fetching posts:', error);
+    throw error;
+  }
+};
 
 export const fetchPostById = async (postId) => {
-  const response = await fetch(import.meta.env.VITE_BACKEND_URL+`/api/posts/1`);
+  const response = await fetch(import.meta.env.VITE_BACKEND_URL+`/api/posts/getpost//1`);
   if (!response.ok) {
     throw new Error('Failed to fetch post details');
   }

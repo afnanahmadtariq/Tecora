@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { FiExternalLink } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
-import { fetchPosts } from '../api/posts'; 
+import { fetchMyPosts } from '../api/posts'; 
 
 const tabs = ['All', 'Active', 'Solved'];
 
@@ -15,10 +15,10 @@ export default function Posts() {
   useEffect(() => {
     const getPosts = async () => {
       try {
-        const data = await fetchPosts();
-        setPosts(data.feed);
+        const data = await fetchMyPosts();
+        setPosts(data);
       } catch (err) {
-        console.log('Failed to load posts. Please try again later.');
+        console.log('Failed to load posts. Please try again later.', err);
       } finally {
         setLoading(false);
       }
@@ -37,12 +37,12 @@ export default function Posts() {
 
   // Navigate to specific post page
   const handleCardClick = (postId) => {
-    navigate(`/posts/${postId}`); // Use navigate
+    navigate(`/myposts/${postId}`); // Use navigate
   };
 
   // Navigate to post page and scroll to answers section
   const handleViewAnswersClick = (postId) => {
-    navigate(`/posts/${postId}#answers`); // Use navigate
+    navigate(`/myposts/${postId}#answers`); // Use navigate
   };
 
   if (loading) {
