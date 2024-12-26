@@ -1,21 +1,22 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Sidebar from './components/Sidebar';
-import Navbar from './components/Navbar';
-import Home from './pages/Home';
-import Explore from './pages/Explore';
-import Projects from './pages/Projects';
-import ProjectDetails from './pages/ProjectPage';
-import MyPosts from './pages/MyPost';
-import MyPostPage from './pages/MyPostPage';
-import Topics from './pages/Topics';
-import TopExperts from './pages/Experts';
-import Saved from './pages/Saved';
-import Profile from './pages/Profile';
-import Settings from './pages/Settings';
-import Subscription from './pages/Subscription';
-import useThemeFavicon from '../useThemeFavicon';
-import { ThemeProvider } from './context/ThemeContext';
-import { UserProvider } from './context/UserContext';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Sidebar from "./components/Sidebar";
+import Navbar from "./components/Navbar";
+import Home from "./pages/Home";
+import Explore from "./pages/Explore";
+import Projects from "./pages/Projects";
+import ProjectDetails from "./pages/ProjectPage";
+import MyPosts from "./pages/MyPost";
+import MyPostPage from "./pages/MyPostPage";
+import Topics from "./pages/Topics";
+import TopExperts from "./pages/Experts";
+import Saved from "./pages/Saved";
+import MyProfile from "./pages/MyProfile";
+import Settings from "./pages/Settings";
+import Subscription from "./pages/Subscription";
+import useThemeFavicon from "../useThemeFavicon";
+import { ThemeProvider } from "./context/ThemeContext";
+import { UserProvider } from "./context/UserContext";
+import Profile from "./pages/profile/Profile";
 
 function App() {
   useThemeFavicon();
@@ -32,15 +33,19 @@ function App() {
                   <Route path="/" element={<Home />} />
                   <Route path="/explore" element={<Explore />} />
                   <Route path="/projects" element={<Projects />} />
-                  <Route path="/projects/:projectId" element={<ProjectDetails />} />
+                  <Route
+                    path="/projects/:projectId"
+                    element={<ProjectDetails />}
+                  />
                   <Route path="/myposts" element={<MyPosts />} />
                   <Route path="/myposts/:postId" element={<MyPostPage />} />
                   <Route path="/topics" element={<Topics />} />
-                  <Route path="/experts" element={<TopExperts/>} />
+                  <Route path="/experts" element={<TopExperts />} />
                   <Route path="/saved" element={<Saved />} />
-                  <Route path="/profile" element={<Profile />} />
+                  <Route path="/profile" element={<MyProfile />} />
                   <Route path="/settings" element={<Settings />} />
                   <Route path="/subscription" element={<Subscription />} />
+                  <Route path="/expertProfile" element={<Profile />} />
                 </Routes>
               </main>
             </div>
