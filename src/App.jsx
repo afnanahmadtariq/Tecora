@@ -5,7 +5,6 @@ import Home from "./pages/Home";
 import Explore from "./pages/Explore";
 import Projects from "./pages/Projects";
 import ProjectDetails from "./pages/ProjectPage";
-import MyPostPage from "./pages/MyPostPage";
 import Topics from "./pages/Topics";
 import TopExperts from "./pages/Experts";
 import Saved from "./pages/Saved";
