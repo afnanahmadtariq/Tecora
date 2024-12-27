@@ -5,6 +5,8 @@ import Home from "./pages/Home";
 import Explore from "./pages/Explore";
 import Projects from "./pages/Projects";
 import ProjectDetails from "./pages/ProjectPage";
+import MyWorks from "./pages/MyWorks";
+import PostPage from "./pages/PostPage";
 import Topics from "./pages/Topics";
 import TopExperts from "./pages/Experts";
 import Saved from "./pages/Saved";
@@ -33,7 +35,7 @@ function App() {
                   <Route path="/projects" element={<Projects />} />
                   <Route path="/projects/:projectId" element={<ProjectDetails />} />
                   <Route path="/myworks" element={<MyWorks />} />
-                  <Route path="/posts/:postId" element={<MyPostPage />} />
+                  <Route path="/posts/:postId" element={<PostPage />} />
                   <Route path="/topics" element={<Topics />} />
                   <Route path="/experts" element={<TopExperts />} />
                   <Route path="/saved" element={<Saved />} />

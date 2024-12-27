@@ -12,7 +12,6 @@ export const fetchPosts = async () => {
     throw new Error('No authorization token found');
   }
   try {
-    console.log(import.meta.env.VITE_BACKEND_URL);
     const response = await fetch(import.meta.env.VITE_BACKEND_URL+'/api/feed/posts',{
       method: 'GET', // Default method is 'GET', you can change it if needed
       headers: {
@@ -32,26 +31,54 @@ export const fetchPosts = async () => {
   }
 };
 
-export const fetchReply = async () => {
+export const fetchReplies = async (id) => {
   const token  = localStorage.getItem('token');
   if (!token) {
     throw new Error('No authorization token found');
   }
   try {
-    console.log(import.meta.env.VITE_BACKEND_URL);
     const response = await fetch(import.meta.env.VITE_BACKEND_URL+'/api/posts/getreplies',{
       method: 'GET', // Default method is 'GET', you can change it if needed
       headers: {
         'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
-        'Content-Type': 'application/json', // Set content type (optional)
+        'Content-Type': 'application/json',
+        'id': `${id}`, 
       }
     });
     if (!response.ok) {
       throw new Error(`Failed to fetch replies: ${response.statusText}`);
     }
     const data = await response.json();
-    console.log("ye aya", data.feed);
-    return await data.feed;
+    console.log("ye aya replies", data.replies);
+    return await data.replies;
+  } catch (error) {
+    console.error('Error fetching replies:', error);
+    throw error;
+  }
+};
+
+export const sendReply = async (id, text) => {
+  const token  = localStorage.getItem('token');
+  if (!token) {
+    throw new Error('No authorization token found');
+  }
+  try {
+    const response = await fetch(import.meta.env.VITE_BACKEND_URL+'/api/posts/reply',{
+      method: 'POST', // Default method is 'GET', you can change it if needed
+      headers: {
+        'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        'id': `${id}`, 
+        'text': `${text}`
+      })
+    });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch replies: ${response.statusText}`);
+    }
+    // const data = await response.json();
+    return response;
   } catch (error) {
     console.error('Error fetching replies:', error);
     throw error;

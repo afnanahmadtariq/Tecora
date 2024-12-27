@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { FiExternalLink } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
-import { fetchMyWorks } from '../api/user'; 
+import { fetchMyWorks } from '../api/user';
+import ProjectCard from '../components/projectCard/ProjectCard';
 
 const tabs = ['All', 'Posts', 'Projects'];
 
@@ -45,19 +46,6 @@ export default function Posts() {
     }
   }, [activeTab]);
 
-  // // Filter works based on activeTab
-  // const filteredPosts = myWorks.filter((works) => {
-  //   if (activeTab === 'All') return true;
-  //   if (activeTab === 'Posts') return myWorks[0];
-  //   if (activeTab === 'Projects') return myWorks[1];
-  //   return true;
-  // });
-
-  // const filteredPosts = activeTab === 'All' 
-  // ? [
-  //   ...(Array.isArray(myWorks.posts) ? myWorks.posts : []),
-  //   ...(Array.isArray(myWorks.projects) ? myWorks.projects : [])] // Combine posts and projects for 'All'
-  // : myWorks[activeTab.toLowerCase()] || myWorks.posts;
 
   // Navigate to specific post page
   const handleCardClick = (postId) => {
@@ -96,12 +84,8 @@ export default function Posts() {
 
       {/* Display Posts */}
       <div className="space-y-4">
-        {projects.length>0?
-        <ProjectCard project={projects} />
-        :
-        <></>}
-        {posts.length>0?
-          posts.map((works) => (
+        {projects.length>0 && <ProjectCard project={projects} />}
+        {posts.length>0 && posts.map((works) => (
             <div
               key={works.id}
               className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm transition-all duration-200 transform hover:scale-95 hover:shadow-lg cursor-pointer flex flex-col"
@@ -154,9 +138,7 @@ export default function Posts() {
                 {works.solved ? 'Solved' : 'Open'}
               </div>
             </div>
-          ))
-          :
-          <></>}
+          ))}
       </div>
     </div>
   );

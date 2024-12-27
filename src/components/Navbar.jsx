@@ -13,7 +13,7 @@ export default function Navbar() {
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
   const [isPostOpen, setIsPostOpen] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // To control the menu visibility
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
   const navigate = useNavigate();
   const handleSwitchToLogin = () => {
@@ -55,7 +55,6 @@ export default function Navbar() {
   };
 
   const handleLogout = () => {
-    // Handle logout logic here
     logout();
     setIsMenuOpen(false);
     navigate("/");
