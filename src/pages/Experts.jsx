@@ -34,23 +34,23 @@ export default function ExpertsPage() {
         {experts.map((expert, index) => (
           <div
             key={index}
-            className="flex items-center bg-white p-4 px-5 rounded-lg shadow-md gap-[5px]"
+            className="flex items-center bg-[var(--accent-light)] dark:bg-[#1d2e3e] p-4 px-5 rounded-lg shadow-md gap-[5px]"
           >
             <div className="w-[66%]">
-              <h3 className="text-[1rem] font-semibold text-gray-800">
+              <h3 className="text-[1rem] font-semibold text-[var(--primary-color-light)] dark:text-[var(--primary-color-dark)]">
                 {expert.name}
               </h3>
-              <p className="text-[.7rem] text-gray-600">
+              <p className="  text-[.7rem] text-[var(--p-light)] dark:text-[var(--p-dark)] ">
                 {expert.specialization}
               </p>
-              <div className="text-xs text-gray-500 flex space-x-4 mt-1">
+              <div className="text-xs text-[var(--p-light)] dark:text-[var(--p-dark)]  flex space-x-4 mt-1">
                 <span>⬆ {expert.followers}m</span>
                 <span>🔥 {expert.recommendations}k</span>
               </div>
               <Link
                 to="/expertProfile"
                 state={{ expert }}
-                className="mt-2 text-[.8rem] text-[var(--secondary-color-light)] flex items-center"
+                className="mt-2 text-[.8rem] text-[var(--secondary-color-light)] dark:text-[var(--secondary-color-dark)] flex items-center"
               >
                 Open Profile
                 <FiExternalLink className="ml-1" />
