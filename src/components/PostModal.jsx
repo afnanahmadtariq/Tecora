@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Modal } from './Modal';
-import { createPost } from '../api/posts';
+import React, { useState } from "react";
+import { Modal } from "./Modal";
+import { createPost } from "../api/posts";
 
 export function PostModal({ isOpen, onClose }) {
   const [activeTab, setActiveTab] = useState("post");
@@ -8,19 +8,28 @@ export function PostModal({ isOpen, onClose }) {
   const [mediaUrl, setMediaUrl] = useState(""); // This will store the file or URL
   const [question, setQuestion] = useState("");
   const [pollOptions, setPollOptions] = useState(["", ""]);
-  const [title, setTitle] = useState(""); 
+  const [title, setTitle] = useState("");
 
   const handleSubmit = async () => {
     let postData;
     switch (activeTab) {
       case "post":
-        postData = { type: "post", title, content: postContent, media: mediaUrl };
+        postData = {
+          type: "post",
+          title,
+          content: postContent,
+          media: mediaUrl,
+        };
         break;
       case "question":
         postData = { type: "question", title, content: question };
         break;
       case "poll":
-        postData = { type: "poll", title, options: pollOptions.filter(option => option.trim() !== "") };
+        postData = {
+          type: "poll",
+          title,
+          options: pollOptions.filter((option) => option.trim() !== ""),
+        };
         break;
       default:
         return;
@@ -56,23 +65,31 @@ export function PostModal({ isOpen, onClose }) {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <h2 className="text-2xl font-bold mb-4">Create a Post</h2>
+      <h2 className="text-2xl text-[var(--text-light)] dark:text-[var(--text-dark)] font-bold mb-4">
+        Create a Post
+      </h2>
       <div className="mb-4">
-        <div className="flex border-b">
+        <div className="flex border-b text-[var(--text-light)] dark:text-[var(--text-dark)]">
           <button
-            className={`py-2 px-4 ${activeTab === "post" ? "border-b-2 border-blue-500" : ""}`}
+            className={`py-2 px-4 ${
+              activeTab === "post" ? "border-b-2 border-blue-500" : ""
+            }`}
             onClick={() => setActiveTab("post")}
           >
             Post
           </button>
           <button
-            className={`py-2 px-4 ${activeTab === "question" ? "border-b-2 border-blue-500" : ""}`}
+            className={`py-2 px-4 ${
+              activeTab === "question" ? "border-b-2 border-blue-500" : ""
+            }`}
             onClick={() => setActiveTab("question")}
           >
             Question
           </button>
           <button
-            className={`py-2 px-4 ${activeTab === "poll" ? "border-b-2 border-blue-500" : ""}`}
+            className={`py-2 px-4 ${
+              activeTab === "poll" ? "border-b-2 border-blue-500" : ""
+            }`}
             onClick={() => setActiveTab("poll")}
           >
             Poll
@@ -85,7 +102,7 @@ export function PostModal({ isOpen, onClose }) {
           placeholder="Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="w-full p-2 border rounded"
+          className="w-full p-2 border rounded bg-white dark:bg-[var(--accent-dark)] "
         />
       </div>
       {activeTab === "post" && (
@@ -94,14 +111,16 @@ export function PostModal({ isOpen, onClose }) {
             placeholder="What's on your mind?"
             value={postContent}
             onChange={(e) => setPostContent(e.target.value)}
-            className="w-full p-2 border rounded min-h-[100px]"
+            className="w-full p-2 border rounded min-h-[100px] bg-white dark:bg-[var(--accent-dark)]"
           />
           <div
             className="w-full p-4 border rounded border-dashed"
             onDrop={handleDrop}
             onDragOver={handleDragOver}
           >
-            <p className="text-center text-gray-600">Drag & drop an image/video or click to select</p>
+            <p className="text-center text-gray-600">
+              Drag & drop an image/video or click to select
+            </p>
             <input
               type="file"
               accept="image/*, video/*"
@@ -109,8 +128,15 @@ export function PostModal({ isOpen, onClose }) {
               className="hidden"
               id="file-upload"
             />
-            <label htmlFor="file-upload" className="cursor-pointer w-full text-center">
-              <span role="img" aria-label="camera" className="block text-3xl text-gray-500">
+            <label
+              htmlFor="file-upload"
+              className="cursor-pointer w-full text-center"
+            >
+              <span
+                role="img"
+                aria-label="camera"
+                className="block text-3xl text-gray-500"
+              >
                 📸
               </span>
               <p className="text-center text-gray-600">Add Image/Video</p>
@@ -118,7 +144,7 @@ export function PostModal({ isOpen, onClose }) {
             {mediaUrl && (
               <div className="mt-4">
                 <p>Media Preview:</p>
-                {mediaUrl.endsWith('.mp4') || mediaUrl.endsWith('.mov') ? (
+                {mediaUrl.endsWith(".mp4") || mediaUrl.endsWith(".mov") ? (
                   <video controls className="w-full mt-2">
                     <source src={mediaUrl} type="video/mp4" />
                     Your browser does not support the video tag.
