@@ -22,8 +22,8 @@ export function PostCard({ post, onViewReplies, onVote }) {
         <img
           // onClick={console.log("clicked!!!")}
           src={
-            post.profilePic
-              ? post.profilePic
+            post["profile pic"] != null
+              ? post["profile pic"]
               : "https://www.w3schools.com/w3images/avatar2.png"
           }
           alt={`${post.username}'s profile`}

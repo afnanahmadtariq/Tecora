@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import { useTheme } from '../context/ThemeContext';
-import { sendDataToBackend } from '../api/post';
-import { useEffect } from 'react';
 import { useUser } from '../context/UserContext';
+import { updateUserDetails } from '../api/user';
 
 export default function Settings() {
   const { isDark } = useTheme();
@@ -37,15 +36,14 @@ export default function Settings() {
     const profileData = {
       username,
       email,
-      password, // This could be handled as a separate change (e.g., through a password reset flow)
+      // password, 
       bio,
       profile_pic: profilePic ,
-      expertise,
-      social_links: socialLinks
+      // expertise,
+      // social_links: socialLinks
     };
-    sendDataToBackend(profileData, 'update-user');
     console.log("Profile data to be sent to backend:", profileData);
-    
+    updateUserDetails(profileData);
   };
 
   return (
