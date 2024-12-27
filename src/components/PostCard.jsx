@@ -17,7 +17,7 @@ export function PostCard({ post, onViewReplies, onVote }) {
   };
 
   return (
-    <div className="bg-[var(--accent-light)]  dark:bg-[var(--accent-dark)]  p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-200">
+    <div className="dark:bg-[var(--accent-dark)] bg-[var(--accent-light)]  p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-200">
       <div className="flex items-start gap-4">
         <img
           // onClick={console.log("clicked!!!")}
@@ -34,7 +34,7 @@ export function PostCard({ post, onViewReplies, onVote }) {
             <span className="font-medium text-[var(--primary-color-light)] dark:text-[var(--primary-color-dark)] ">
               {post.username}
             </span>
-            <span className="text-sm text-gray-500">·</span>
+            <span className="text-gray-500 text-sm ">·</span>
             <span className="text-sm text-[var(--p-light)] dark:text-[var(--p-dark)] text-gray-500">
               {post.date}
             </span>
@@ -64,7 +64,7 @@ export function PostCard({ post, onViewReplies, onVote }) {
             {post.title}
           </h3>
 
-          <div className="text-[var(--p-light)] dark:text-[var(--p-dark)] mb-4">
+          <div className=" dark:text-[var(--p-dark)] text-[var(--p-light)] mb-4">
             {needsReadMore && !isExpanded ? (
               <>
                 {post.description.slice(0, descriptionLength)}...

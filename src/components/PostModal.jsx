@@ -65,7 +65,7 @@ export function PostModal({ isOpen, onClose }) {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <h2 className="text-2xl text-[var(--text-light)] dark:text-[var(--text-dark)] font-bold mb-4">
+      <h2 className="text-2xl  dark:text-[var(--text-dark)] text-[var(--text-light)] font-bold mb-4">
         Create a Post
       </h2>
       <div className="mb-4">
