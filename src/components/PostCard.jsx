@@ -21,7 +21,7 @@ export function PostCard({ post, onViewReplies, onVote }) {
       <div className="flex items-start gap-4">
         <img 
           // onClick={console.log("clicked!!!")}
-          src={post.profilePic? post.profilePic:'https://www.w3schools.com/w3images/avatar2.png'} 
+          src={post['profile pic']!=null? post['profile pic']:'https://www.w3schools.com/w3images/avatar2.png'} 
           alt={`${post.username}'s profile`}
           className="w-10 h-10 rounded-full object-cover"
         />

@@ -40,3 +40,25 @@ export const fetchMyWorks = async () => {
       throw error;
     }
   };
+
+export const updateUserDetails = async (data) => {
+  const token  = localStorage.getItem('token');
+  if (!token) {
+    throw new Error('No authorization token found');
+  }
+  try {
+    const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/api/user/update', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data), // Send the data as a JSON string
+    });
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.error('Error:', error);
+    return null;  // Or return an error message, depending on your use case
+  }
+}
