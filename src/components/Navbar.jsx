@@ -112,9 +112,8 @@ export default function Navbar() {
                   onClick={handleMenuToggle}
                   className="w-10 h-10 rounded-full bg-gray-300 cursor-pointer hover:ring-2 hover:ring-blue-500"
                 >
-                  {/* Replace with user's profile image */}
                   <img
-                    src={getProfilePic()} // Replace with dynamic profile image URL
+                    src={getProfilePic()} 
                     alt="Profile"
                     className="w-full h-full rounded-full object-cover"
                   />

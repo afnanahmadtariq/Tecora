@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { fetchPostById } from '../api/posts'; // assuming you have this function to fetch post by ID
+import { fetchPostById } from '../api/posts'; 
 
 export default function PostPage() {
   const { postId } = useParams();
@@ -8,11 +8,10 @@ export default function PostPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch the post details when the component mounts
   useEffect(() => {
     const getPostDetails = async () => {
       try {
-        const data = await fetchPostById(postId); // Fetch post by ID from API
+        const data = await fetchPostById(postId); 
         setPost(data);
       } catch (err) {
         console.error(err);
@@ -25,7 +24,6 @@ export default function PostPage() {
     getPostDetails();
   }, [postId]);
 
-  // Handle smooth scrolling to the answers section if URL contains #answers
   useEffect(() => {
     if (window.location.hash === '#answers') {
       const answersSection = document.getElementById('answers');

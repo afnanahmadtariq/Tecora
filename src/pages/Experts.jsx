@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { FiExternalLink } from "react-icons/fi"; // API to fetch experts' data
-import fetchTopExperts from "../api/experts";
+import { FiExternalLink } from "react-icons/fi";
+import { fetchTopExperts } from "../api/experts";
 import { Link } from "react-router-dom";
 
 export default function ExpertsPage() {

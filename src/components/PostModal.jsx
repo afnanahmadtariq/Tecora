@@ -5,7 +5,7 @@ import { createPost } from "../api/posts";
 export function PostModal({ isOpen, onClose }) {
   const [activeTab, setActiveTab] = useState("post");
   const [postContent, setPostContent] = useState("");
-  const [mediaUrl, setMediaUrl] = useState(""); // This will store the file or URL
+  const [mediaUrl, setMediaUrl] = useState("");
   const [question, setQuestion] = useState("");
   const [pollOptions, setPollOptions] = useState(["", ""]);
   const [title, setTitle] = useState("");

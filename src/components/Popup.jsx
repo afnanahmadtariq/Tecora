@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-
 export function Popup({ message, showPopup, isWarning }) {
   const [isVisible, setIsVisible] = useState(showPopup);
 
@@ -9,7 +8,7 @@ export function Popup({ message, showPopup, isWarning }) {
       setIsVisible(showPopup); 
       const timer = setTimeout(() => {
         setIsVisible(false);
-      }, 1000); // Popup will disappear after 3 seconds
+      }, 1000); // Popup will disappear after 1 seconds
 
       return () => clearTimeout(timer); // Cleanup timer on component unmount
     }

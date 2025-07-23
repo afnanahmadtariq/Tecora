@@ -1,41 +1,94 @@
 import { FiExternalLink } from "react-icons/fi";
 import { useState } from "react";
 
-const questions = [
-  {
-    id: 1,
-    title:
-      "What tools can help streamline project management for a remote team?",
-    date: "Apr 20, 2024",
-    tags: ["Management", "Software Project", "Software Company"],
-    replies: 10,
-  },
-  {
-    id: 2,
-    title: "What are the best practices for optimizing website performance?",
-    date: "Apr 20, 2024",
-    tags: ["Website", "React", "Software Company"],
-    replies: 10,
-  },
-];
-
-const trendyTopics = [
-  "Programming",
-  "Digital Marketing",
-  "Artificial Intelligence",
-  "Web Development",
-  "UI/UX trends",
-];
-
-const specializedTopics = [
-  "Website designing",
-  "Mockups",
-  "React Development",
-  "WordPress",
-];
-
 export default function Topics() {
-  const [selectedFilter, setSelectedFilter] = useState("All");
+  const [selectedFilter, setSelectedFilter] = useState("All");const [questions, setQuestions] = useState([]);
+  const [trendyTopics, setTrendyTopics] = useState([]);
+  const [specializedTopics, setSpecializedTopics] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTopics = async () => {
+      try {
+        const fetchedQuestions = await fetchQuestions(); 
+        const fetchedTrendyTopics = await fetchTrendyTopics(); 
+        const fetchedSpecializedTopics = await fetchSpecializedTopics(); 
+
+        setQuestions(fetchedQuestions);
+        setTrendyTopics(fetchedTrendyTopics);
+        setSpecializedTopics(fetchedSpecializedTopics);
+      } catch (error) {
+        console.error("Failed to fetch topics data.", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTopics();
+  }, []);
+
+  const fetchQuestions = async () => {
+    return new Promise((resolve) =>
+      setTimeout(
+        () =>
+          resolve([
+            {
+              id: 1,
+              title:
+                "What tools can help streamline project management for a remote team?",
+              date: "Apr 20, 2024",
+              tags: ["Management", "Software Project", "Software Company"],
+              replies: 10,
+            },
+            {
+              id: 2,
+              title:
+                "What are the best practices for optimizing website performance?",
+              date: "Apr 20, 2024",
+              tags: ["Website", "React", "Software Company"],
+              replies: 10,
+            },
+          ]),
+        1000
+      )
+    );
+  };
+
+  const fetchTrendyTopics = async () => {
+    return new Promise((resolve) =>
+      setTimeout(
+        () =>
+          resolve([
+            "Programming",
+            "Digital Marketing",
+            "Artificial Intelligence",
+            "Web Development",
+            "UI/UX trends",
+          ]),
+        1000
+      )
+    );
+  };
+
+  const fetchSpecializedTopics = async () => {
+    return new Promise((resolve) =>
+      setTimeout(
+        () =>
+          resolve([
+            "Website designing",
+            "Mockups",
+            "React Development",
+            "WordPress",
+          ]),
+        1000
+      )
+    );
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
 
   return (
     <div className="flex gap-8 px-8 py-6">

@@ -7,8 +7,8 @@ import { fetchPosts, fetchReplies, sendReply } from "../api/posts";
 
 export default function Explore() {
   const [selectedPost, setSelectedPost] = useState(null)
-  const [posts, setPosts] = useState([]) // Your posts data here
-  const [replies, setReplies] = useState([]) // Your replies data here
+  const [posts, setPosts] = useState([])
+  const [replies, setReplies] = useState([]) 
   const [loading, setLoading] = useState(true);
   const [replyText, setReplyText] = useState("");
   const [replyingTo, setReplyingTo] = useState(null);

@@ -74,6 +74,23 @@ const dummyExperts = [
   },
 ];
 
-export default function fetchTopExperts() {
-  return dummyExperts;
+export const fetchTopExperts = async () => {
+  const token  = localStorage.getItem('token');
+  if (!token) {
+    throw new Error('No authorization token found');
+  }
+  try {
+    const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/api/user/experts', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      }
+    });
+    return response;
+  } catch (error) {
+    console.error('Error:', error);
+    return response; 
+  }
 }
+

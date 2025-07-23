@@ -7,8 +7,6 @@ import { Popup } from '../components/Popup';
 export default function Settings() {
   const { isDark } = useTheme();
   const { user, getProfilePic } = useUser();
-  
-  // Profile state variables
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,7 +21,6 @@ export default function Settings() {
   const [popupMessage, setPopupMessage] = useState('');
   const [isWarning, setIsWarning] = useState(false);
 
-  // Handle profile image change
   const handleImageChange = (e) => {
 
     const file = e.target.files[0];

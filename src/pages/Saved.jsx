@@ -11,7 +11,6 @@ export default function Posts() {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  // Fetch posts from API
   useEffect(() => {
     const getPosts = async () => {
       try {
@@ -27,7 +26,6 @@ export default function Posts() {
     getPosts();
   }, []);
 
-  // Filter posts based on activeTab
   const filteredPosts = posts.filter((post) => {
     if (activeTab === 'All') return true;
     if (activeTab === 'Posts') return !post.solved;
@@ -35,14 +33,12 @@ export default function Posts() {
     return true;
   });
 
-  // Navigate to specific post page
   const handleCardClick = (postId) => {
-    navigate(`/posts/${postId}`); // Use navigate
+    navigate(`/posts/${postId}`); 
   };
 
-  // Navigate to post page and scroll to answers section
   const handleViewAnswersClick = (postId) => {
-    navigate(`/posts/${postId}#answers`); // Use navigate
+    navigate(`/posts/${postId}#answers`); 
   };
 
   if (loading) {
@@ -78,7 +74,7 @@ export default function Posts() {
             className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm transition-all duration-200 transform hover:scale-95 hover:shadow-lg cursor-pointer flex flex-col"
             onClick={() => handleCardClick(post.post_id)}
             >
-              <div className="flex-1"> {/* This will grow to take available space */}
+              <div className="flex-1">
                 <div>
                   <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
                     {post.title}

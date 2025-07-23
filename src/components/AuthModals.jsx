@@ -1,8 +1,7 @@
 import { Fragment, useState, forwardRef, useEffect } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { FiX, FiEye, FiEyeOff } from 'react-icons/fi';
-import { sendDataToBackend } from '../api/post';
-import { signUp } from '../api/auth';
+import { signUp, login } from '../api/auth';
 import { Popup } from '../components/Popup';
 import { useUser } from '../context/UserContext';
 
@@ -126,8 +125,8 @@ export function SignUpModal({ isOpen, onClose, onSwitchToLogin }) {
   }
 
   const handleVerificationSuccess = () => {
-    setShowVerificationPopup(false); // **NEW**
-    onSwitchToLogin(); // Navigate to login page after successful verification **NEW**
+    setShowVerificationPopup(false); 
+    onSwitchToLogin();
   };
   return (
     <>
@@ -283,8 +282,7 @@ export function SignUpModal({ isOpen, onClose, onSwitchToLogin }) {
 function EmailVerificationPopup({ isOpen, onClose, onVerify }) {
   const [isLoading, setIsLoading] = useState(false);
   const [code, setCode] = useState(['', '', '', '', '', '']);
-  const [isValidEmail, setIsValidEmail] = useState(null);  // State to track email verification status
-    
+  const [isValidEmail, setIsValidEmail] = useState(null);
   // State to control visibility and message of the popup
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState('');
@@ -307,17 +305,15 @@ function EmailVerificationPopup({ isOpen, onClose, onVerify }) {
   const handleVerify = async () => {
     setIsLoading(true);
 
-    // Simulate email verification (replace with actual email verification logic)
-    const isVerified = await verifyEmail(code.join(''));  // Pass the code as a string
+    const isVerified = await verifyEmail(code.join('')); 
 
-    setIsValidEmail(isVerified);  // Set the verification status
+    setIsValidEmail(isVerified); 
     setIsLoading(false);
     onVerify();
   };
 
   const verifyEmail = async (code) => {
-    // Mock verification logic (this should be replaced with actual logic)
-    return code === '123456';  // Replace with actual verification logic
+    return code === '123456'
   };
 
   return (
@@ -419,15 +415,15 @@ function EmailVerificationPopup({ isOpen, onClose, onVerify }) {
 
 
 export function LoginModal({onLoginSuccess, isOpen, onClose, onSwitchToSignUp }) {
-  const { login } = useUser();
+  const { saveToken } = useUser();
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   
-  // const [username, setUsername] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  // const [usernameError, setUsernameError] = useState('');
+  const [usernameError, setUsernameError] = useState('');
   const [emailError, setEmailError] = useState('');
 
   // State to control visibility and message of the popup
@@ -445,23 +441,23 @@ export function LoginModal({onLoginSuccess, isOpen, onClose, onSwitchToSignUp })
   };
 
   // Validate username
-  // useEffect(() => {
-  //   if (username && username.length < 3) {
-  //     setUsernameError('Username must be at least 3 characters long.');
-  //   } else {
-  //     setUsernameError('');
-  //   }
-  // }, [username]);
+  useEffect(() => {
+    if (username && username.length < 3) {
+      setUsernameError('Username must be at least 3 characters long.');
+    } else {
+      setUsernameError('');
+    }
+  }, [username]);
 
   // Validate email format
-  // useEffect(() => {
-  //   const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-  //   if (email && !emailPattern.test(email)) {
-  //     setEmailError('Please enter a valid email address.');
-  //   } else {
-  //     setEmailError('');
-  //   }
-  // }, [email]);
+  useEffect(() => {
+    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+    if (email && !emailPattern.test(email)) {
+      setEmailError('Please enter a valid email address.');
+    } else {
+      setEmailError('');
+    }
+  }, [email]);
 
 
   const signIn = async () => {
@@ -475,11 +471,11 @@ export function LoginModal({onLoginSuccess, isOpen, onClose, onSwitchToSignUp })
       email,
       password,
     };
-    const response = await sendDataToBackend(data, 'user/login');
+    const response = await login(data);
     const res = await response.json();
     if (res.message == "Logged in successfully"){
       setIsLoading(false);
-      login(res.token);
+      saveToken(res.token);
       triggerPopup("Logged in");
       onLoginSuccess();
     }

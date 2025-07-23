@@ -2,62 +2,51 @@ import React, { useState } from "react";
 import { FiArrowLeft, FiPlus, FiExternalLink } from "react-icons/fi";
 
 export default function ProjectPage() {
-  // Sample data - in a real app this would come from props or state
-  const project = {
-    title: "Web Wonders",
-    author: "Andrew Tate",
-    progress: { current: 4, total: 7 },
-    date: "Apr 20, 2024",
-    tags: ["Management", "Software Project", "Software Company"],
-    description:
-      "In this project, I aim to master the process of building responsive websites that adapt seamlessly across devices, using modern frameworks like React and Tailwind CSS. I want to understand how to create layouts that look polished and professional on any screen size, from mobile phones to large desktops. This project will help me dive deeper into concepts like media posts, flexible grids, and component-based design, allowing me to develop web applications that provide a smooth user experience no matter the device. My goal is to build sites that are both functional and visually engaging using industry-leading tools.",
-    questions: [
-      {
-        id: 1,
-        title:
-          "What tools can help streamline project management for a remote team?",
-        replies: 10,
-        author: {
-          avatar: "/placeholder.svg?height=40&width=40",
-        },
-      },
-      {
-        id: 2,
-        title:
-          "What tools can help streamline project management for a remote team?",
-        replies: 10,
-        author: {
-          avatar: "/placeholder.svg?height=40&width=40",
-        },
-      },
-      {
-        id: 3,
-        title:
-          "What tools can help streamline project management for a remote team?",
-        replies: 10,
-        author: {
-          avatar: "/placeholder.svg?height=40&width=40",
-        },
-      },
-    ],
+  const [project, setProject] = useState({});
+  const [myProjects, setMyProjects] = useState([]);
+  const [relatedProjects, setRelatedProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState("All");
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const fetchedProject = await fetchProject(); 
+        const fetchedMyProjects = await fetchMyProjects(); 
+        const fetchedRelatedProjects = await fetchRelatedProjects(); 
+
+        setProject(fetchedProject);
+        setMyProjects(fetchedMyProjects);
+        setRelatedProjects(fetchedRelatedProjects);
+      } catch (error) {
+        console.error("Failed to fetch project data.", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
+
+  const fetchProject = async () => {
+    return new Promise((resolve) => setTimeout(() => resolve({ id: 1, name: "Example Project" }), 1000));
   };
 
-  const myProjects = [
-    "Web Wonders",
-    "AI Explorer",
-    "Ecommerce Essentials",
-    "Digital Marketing",
-    "Creative Coding",
-  ];
+  const fetchMyProjects = async () => {
+    return new Promise((resolve) =>
+      setTimeout(() => resolve([{ id: 1, name: "My Project 1" }, { id: 2, name: "My Project 2" }]), 1000)
+    );
+  };
 
-  const relatedProjects = [
-    "UI/UX Journey",
-    "Mobile Development",
-    "Remote Work",
-    "SEO Success Strategies",
-  ];
+  const fetchRelatedProjects = async () => {
+    return new Promise((resolve) =>
+      setTimeout(() => resolve([{ id: 3, name: "Related Project 1" }, { id: 4, name: "Related Project 2" }]), 1000)
+    );
+  };
 
-  const [activeTab, setActiveTab] = useState("All");
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="min-h-screen bg-transparent text-white">

@@ -3,7 +3,7 @@ import { useTheme } from '../context/ThemeContext';
 import { sendDataToBackend } from '../api/post';
 
 export default function Settings() {
-  const { isDark, toggleTheme } = useTheme(); // Assuming you have a toggleTheme function to switch themes
+  const { isDark, toggleTheme } = useTheme(); 
   
   // General settings state
   const [username, setUsername] = useState('');
@@ -29,12 +29,11 @@ export default function Settings() {
     videos: true
   });
 
-  // Handle save functionality
   const handleSave = async () => {
     const settingsData = {
       username,
       email,
-      password, // You would want to handle password change securely
+      password, 
       email_notifications: emailNotifications,
       push_notifications: pushNotifications,
       privacy_feed: privacyFeed,

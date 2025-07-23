@@ -23,17 +23,16 @@ export const fetchMyWorks = async () => {
     try {
       console.log(import.meta.env.VITE_BACKEND_URL);
       const response = await fetch(import.meta.env.VITE_BACKEND_URL+'/api/user/myworks',{
-        method: 'GET', // Default method is 'GET', you can change it if needed
+        method: 'GET', 
         headers: {
-          'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
-          'Content-Type': 'application/json', // Set content type (optional)
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
         }
       });
       if (!response.ok) {
         throw new Error(`Failed to fetch posts: ${response.statusText}`);
       }
       const data = await response.json();
-      console.log("ye aya: ", data);
       return data;
     } catch (error) {
       console.error('Error fetching posts:', error);
@@ -53,12 +52,11 @@ export const updateUserDetails = async (data) => {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data), // Send the data as a JSON string
+      body: JSON.stringify(data), 
     });
-    console.log(response);
     return response;
   } catch (error) {
     console.error('Error:', error);
-    return null;  // Or return an error message, depending on your use case
+    return null;
   }
 }

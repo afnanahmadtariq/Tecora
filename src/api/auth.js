@@ -15,3 +15,20 @@ export const signUp = async (data) => {
     return response;  // Or return an error message, depending on your use case
   }
 };
+
+export const login = async (data, path) => {
+  try {
+    const response = await fetch(import.meta.env.VITE_BACKEND_URL + '/api/user/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.error('Error:', error);
+    return null;  
+  }
+};
