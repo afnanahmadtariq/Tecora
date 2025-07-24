@@ -10,10 +10,10 @@ export default function ExpertsPage() {
   useEffect(() => {
     const getExperts = async () => {
       try {
-        const data = await fetchTopExperts;
-        setExperts(data);
+        const data = await fetchTopExperts();
+        setExperts(Array.isArray(data.experts) ? data.experts : (Array.isArray(data) ? data : []));
       } catch (error) {
-        console.error("Failed to load experts.");
+        console.error("Failed to load experts:", error);
       } finally {
         setLoading(false);
       }

@@ -31,7 +31,7 @@ const ProjectCard = ({ project }) => {
         </div>
         <p className="project-description">{project.description}</p>
         <div className="card-tags">
-          {project.tags.map((tag, index) => (
+          {(project.tags || []).map((tag, index) => (
             <span key={index} className="tag">
               {tag}
             </span>

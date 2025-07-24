@@ -17,7 +17,7 @@ export default function Projects() {
     const getProjects = async () => {
       try {
         const data = await fetchProjects();
-        setProjects(data);
+        setProjects(data.feed);
       } catch (err) {
         console.log("Failed to load projects. Please try again later.");
       } finally {
@@ -64,7 +64,7 @@ export default function Projects() {
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
         {filteredProjects.map((project) => (
-          <ProjectCard project={project} />
+          <ProjectCard key={project.id} project={project} />
           // <div
           //   key={project.id}
           //   className="bg-white dark:bg-gray-800 rounded-lg shadow-sm transition-colors duration-200"

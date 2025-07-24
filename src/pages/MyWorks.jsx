@@ -8,7 +8,7 @@ const tabs = ['All', 'Posts', 'Projects'];
 
 export default function Posts() {
   const [activeTab, setActiveTab] = useState('All');
-  const [works, setWorks] = useState([]);
+  const [works, setWorks] = useState({ posts: [], projects: [] });
   const [projects, setProjects] = useState([]);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -18,9 +18,12 @@ export default function Posts() {
     const fetch = async () => {
       try {
         const data = await fetchMyWorks();
-        setWorks(data);
-        setPosts(data.posts);
-        setProjects(data.projects);
+        setWorks({
+          posts: data?.posts || [],
+          projects: data?.projects || []
+        });
+        setPosts(data?.posts || []);
+        setProjects(data?.projects || []);
       } catch (err) {
         console.log('Failed to load works. Please try again later.', err);
       } finally {
@@ -32,16 +35,16 @@ export default function Posts() {
 
   useEffect( () => {
     if (activeTab == 'All'){
-      setPosts(works.posts);
-      setProjects(works.projects);
+      setPosts(works?.posts || []);
+      setProjects(works?.projects || []);
     }
     else if (activeTab == 'Posts'){
-      setPosts(works.posts);
+      setPosts(works?.posts || []);
       setProjects([]);
     }
     else if (activeTab == 'Projects'){
       setPosts([]);
-      setProjects(works.projects);
+      setProjects(works?.projects || []);
     }
   }, [activeTab]);
 
@@ -80,8 +83,8 @@ export default function Posts() {
 
       {/* Display Posts */}
       <div className="space-y-4">
-        {projects.length>0 && <ProjectCard project={projects} />}
-        {posts.length>0 && posts.map((works) => (
+        {(projects?.length > 0) && <ProjectCard project={projects} />}
+        {(posts?.length > 0) && posts.map((works) => (
             <div
               key={works.id}
               className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm transition-all duration-200 transform hover:scale-95 hover:shadow-lg cursor-pointer flex flex-col"

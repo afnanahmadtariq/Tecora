@@ -1,5 +1,5 @@
 import { FiExternalLink } from "react-icons/fi";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Topics() {
   const [selectedFilter, setSelectedFilter] = useState("All");const [questions, setQuestions] = useState([]);
