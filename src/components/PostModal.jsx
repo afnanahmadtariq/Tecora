@@ -9,33 +9,58 @@ export function PostModal({ isOpen, onClose }) {
   const [question, setQuestion] = useState("");
   const [pollOptions, setPollOptions] = useState(["", ""]);
   const [title, setTitle] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleSubmit = async () => {
+    setLoading(true);
+    setError("");
+    setSuccess("");
     let postData;
     switch (activeTab) {
       case "post":
         postData = {
           type: "post",
-          title,
-          content: postContent,
+          title: title.trim(),
+          content: postContent.trim(),
           media: mediaUrl,
         };
         break;
       case "question":
-        postData = { type: "question", title, content: question };
+        postData = {
+          type: "question",
+          title: title.trim(),
+          content: question.trim(),
+        };
         break;
       case "poll":
         postData = {
           type: "poll",
-          title,
-          options: pollOptions.filter((option) => option.trim() !== ""),
+          title: title.trim(),
+          options: pollOptions.map(opt => opt.trim()).filter(opt => opt !== ""),
         };
         break;
       default:
+        setLoading(false);
         return;
     }
-    await createPost(postData);
-    onClose();
+    try {
+      const res = await createPost(postData);
+      if (res && res.ok) {
+        setSuccess("Post created successfully!");
+        setTimeout(() => {
+          setSuccess("");
+          onClose();
+        }, 1000);
+      } else {
+        setError("Failed to create post. Please try again.");
+      }
+    } catch (err) {
+      setError("An error occurred. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const addPollOption = () => {
@@ -65,31 +90,28 @@ export function PostModal({ isOpen, onClose }) {
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <h2 className="text-2xl  dark:text-[var(--text-dark)] text-[var(--text-light)] font-bold mb-4">
-        Create a Post
+      <h2 className="text-2xl dark:text-[var(--text-dark)] text-[var(--text-light)] font-bold mb-4">
+        Create a {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
       </h2>
       <div className="mb-4">
         <div className="flex border-b text-[var(--text-light)] dark:text-[var(--text-dark)]">
           <button
-            className={`py-2 px-4 ${
-              activeTab === "post" ? "border-b-2 border-blue-500" : ""
-            }`}
+            className={`py-2 px-4 focus:outline-none ${activeTab === "post" ? "border-b-2 border-blue-500 font-semibold" : ""}`}
+            aria-pressed={activeTab === "post"}
             onClick={() => setActiveTab("post")}
           >
             Post
           </button>
           <button
-            className={`py-2 px-4 ${
-              activeTab === "question" ? "border-b-2 border-blue-500" : ""
-            }`}
+            className={`py-2 px-4 focus:outline-none ${activeTab === "question" ? "border-b-2 border-blue-500 font-semibold" : ""}`}
+            aria-pressed={activeTab === "question"}
             onClick={() => setActiveTab("question")}
           >
             Question
           </button>
           <button
-            className={`py-2 px-4 ${
-              activeTab === "poll" ? "border-b-2 border-blue-500" : ""
-            }`}
+            className={`py-2 px-4 focus:outline-none ${activeTab === "poll" ? "border-b-2 border-blue-500 font-semibold" : ""}`}
+            aria-pressed={activeTab === "poll"}
             onClick={() => setActiveTab("poll")}
           >
             Poll
@@ -102,7 +124,8 @@ export function PostModal({ isOpen, onClose }) {
           placeholder="Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="w-full p-2 border rounded bg-white dark:bg-[var(--accent-dark)] "
+          className="w-full p-2 border rounded bg-white dark:bg-[var(--accent-dark)]"
+          aria-label="Title"
         />
       </div>
       {activeTab === "post" && (
@@ -112,6 +135,7 @@ export function PostModal({ isOpen, onClose }) {
             value={postContent}
             onChange={(e) => setPostContent(e.target.value)}
             className="w-full p-2 border rounded min-h-[100px] bg-white dark:bg-[var(--accent-dark)]"
+            aria-label="Post content"
           />
           <div
             className="w-full p-4 border rounded border-dashed"
@@ -164,6 +188,7 @@ export function PostModal({ isOpen, onClose }) {
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
             className="w-full p-2 border rounded min-h-[100px]"
+            aria-label="Question content"
           />
         </div>
       )}
@@ -180,21 +205,30 @@ export function PostModal({ isOpen, onClose }) {
                 setPollOptions(newOptions);
               }}
               className="w-full p-2 border rounded"
+              aria-label={`Poll option ${index + 1}`}
             />
           ))}
           <button
             onClick={addPollOption}
             className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+            type="button"
           >
             Add Option
           </button>
         </div>
       )}
+      {error && (
+        <div className="w-full mt-2 text-red-600 text-center">{error}</div>
+      )}
+      {success && (
+        <div className="w-full mt-2 text-green-600 text-center">{success}</div>
+      )}
       <button
         onClick={handleSubmit}
-        className="w-full mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        className={`w-full mt-4 px-4 py-2 rounded text-white transition-colors duration-200 ${loading ? "bg-blue-300 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"}`}
+        disabled={loading}
       >
-        Post
+        {loading ? "Posting..." : "Post"}
       </button>
     </Modal>
   );
