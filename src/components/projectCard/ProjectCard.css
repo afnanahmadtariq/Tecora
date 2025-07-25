@@ -1,92 +1,118 @@
-.project-title {
-  color: var(--primary-color-dark);
-}
-/* ProjectCard.css */
+
+
+/* Modern Project Card Styles */
 .project-card {
   display: flex;
-  align-items: center;
-  justify-content: center;
   flex-direction: column;
-  border-radius: 5px;
+  align-items: flex-start;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 2px 16px 0 rgba(0,0,0,0.07);
   overflow: hidden;
+  transition: box-shadow 0.2s;
+  cursor: pointer;
+  min-width: 260px;
+  max-width: 340px;
+  margin: 16px auto;
 }
 
-.project-img-section {
-  width: 100%;
-  max-height: 50%;
+.project-card:hover {
+  box-shadow: 0 4px 24px 0 rgba(0,0,0,0.13);
 }
+
+.project-image {
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  border-radius: 18px 18px 0 0;
+  background: #f6f6f6;
+}
+
 .project-desc {
+  width: 100%;
+  padding: 20px 18px 16px 18px;
+  background: transparent;
   display: flex;
-  align-items: start;
-  justify-content: center;
   flex-direction: column;
-  padding: 12px;
-  gap: 10px;
-  background-color: var(--accent-dark);
-  p {
-    font-size: 11px;
-    color: var(--p-dark);
-  }
-  .card-tags {
-    display: flex;
-    align-items: start;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 5px;
-    span {
-      font-size: 10px;
-      padding: 2px 4px;
-      /* background-color: --var(); */
-      border: 1px solid var(--primary-color-dark);
-      border-radius: 5px;
-      color: var(--p-dark);
-    }
-  }
-  .aura-open {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+  gap: 12px;
+}
+
+.title-bmark {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin-bottom: 2px;
+}
+
+.project-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #23272f;
+  margin: 0;
+  letter-spacing: -0.5px;
+}
+
+.project-description {
+  color: #5a5a5a;
+  font-size: 0.98rem;
+  margin: 0 0 4px 0;
+  line-height: 1.5;
+}
+
+.card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 4px;
+}
+
+.tag {
+  background: #f3f4f6;
+  color: #23272f;
+  font-size: 0.82rem;
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: none;
+  font-weight: 500;
+  letter-spacing: 0.1px;
 }
 
 .aura-open {
-  .aura {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    color: var(--accent-dark);
-  }
-  p {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 14px;
-    svg {
-      fill: var(--p-dark);
-      width: 20px;
-      stroke-width: 0.5;
-    }
-  }
-  button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--secondary-color-dark);
-    font-size: 13px;
-  }
-}
-.title-bmark {
-  display: flex;
-  align-items: start;
-  justify-content: space-between;
   width: 100%;
-  h3 {
-    font-size: 1.3rem;
-    font-weight: 600;
-  }
-  span svg {
-    fill: var(--p-dark);
-    display: inline;
-  }
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.aura {
+  display: flex;
+  gap: 18px;
+}
+
+.vote {
+  display: flex;
+  align-items: center;
+  color: #7b7b7b;
+  font-size: 0.98rem;
+  font-weight: 500;
+  gap: 2px;
+}
+
+.open-project-btn {
+  background: #23272f;
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 8px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.18s;
+  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.04);
+}
+.open-project-btn:hover {
+  background: #444857;
 }
