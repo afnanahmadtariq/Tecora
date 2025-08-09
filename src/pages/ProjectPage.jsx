@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import { FiArrowLeft, FiPlus, FiExternalLink } from "react-icons/fi";
+import { fetchProjects, fetchProjectDetails } from "../api/projects";
 
 export default function ProjectPage() {
   const [project, setProject] = useState({});
@@ -7,45 +8,48 @@ export default function ProjectPage() {
   const [relatedProjects, setRelatedProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("All");
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchProjects = async () => {
+    const fetchProjectsData = async () => {
       try {
-        const fetchedProject = await fetchProject(); 
-        const fetchedMyProjects = await fetchMyProjects(); 
-        const fetchedRelatedProjects = await fetchRelatedProjects(); 
+        const fetchedProject = await fetchProjectDetails(1); // Replace 1 with the actual project ID
+        const fetchedMyProjects = await fetchProjects();
+        const fetchedRelatedProjects = await fetchProjects(); // Adjust API logic if needed
 
         setProject(fetchedProject);
         setMyProjects(fetchedMyProjects);
         setRelatedProjects(fetchedRelatedProjects);
       } catch (error) {
         console.error("Failed to fetch project data.", error);
+        setError("Failed to load project data. Please try again later.");
       } finally {
         setLoading(false);
       }
     };
 
-    fetchProjects();
+    fetchProjectsData();
   }, []);
-
-  const fetchProject = async () => {
-    return new Promise((resolve) => setTimeout(() => resolve({ id: 1, name: "Example Project" }), 1000));
-  };
-
-  const fetchMyProjects = async () => {
-    return new Promise((resolve) =>
-      setTimeout(() => resolve([{ id: 1, name: "My Project 1" }, { id: 2, name: "My Project 2" }]), 1000)
-    );
-  };
-
-  const fetchRelatedProjects = async () => {
-    return new Promise((resolve) =>
-      setTimeout(() => resolve([{ id: 3, name: "Related Project 1" }, { id: 4, name: "Related Project 2" }]), 1000)
-    );
-  };
 
   if (loading) {
     return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-transparent text-white">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-4">Error</h1>
+          <p className="text-gray-300 mb-6">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -83,8 +87,9 @@ export default function ProjectPage() {
                       className="bg-blue-500 h-2 rounded-full"
                       style={{
                         width: `${
-                          (project.progress.current / project.progress.total) *
-                          100
+                          project.progress?.current && project.progress?.total
+                            ? (project.progress.current / project.progress.total) * 100
+                            : 0
                         }%`,
                       }}
                     />
@@ -94,7 +99,7 @@ export default function ProjectPage() {
               </div>
 
               <div className="flex gap-2">
-                {project.tags.map((tag) => (
+                {project.tags?.map((tag) => (
                   <span
                     key={tag}
                     className="px-3 py-1 bg-gray-300 text-gray-700 rounded-full text-sm"
@@ -140,7 +145,7 @@ export default function ProjectPage() {
               </div>
 
               <div className="space-y-4">
-                {project.questions.map((question) => (
+                {project.questions?.map((question) => (
                   <div
                     key={question.id}
                     className="p-4 bg-transparent rounded-lg border border-gray-400 hover:border-blue-500 transition-colors"
@@ -177,7 +182,7 @@ export default function ProjectPage() {
             <div className="bg-transparent border p-6 rounded-lg shadow-sm mb-6">
               <h2 className="text-lg font-semibold mb-4">My Projects</h2>
               <ul className="space-y-3">
-                {myProjects.map((project) => (
+                {Array.isArray(myProjects) && myProjects.map((project) => (
                   <li key={project}>
                     <a
                       href="#"
@@ -194,7 +199,7 @@ export default function ProjectPage() {
             <div className="bg-transparent border p-6 rounded-lg shadow-sm">
               <h2 className="text-lg font-semibold mb-4">Related Projects</h2>
               <ul className="space-y-3">
-                {relatedProjects.map((project) => (
+                {Array.isArray(relatedProjects) && relatedProjects.map((project) => (
                   <li key={project}>
                     <a
                       href="#"

@@ -1,10 +1,11 @@
-
-import React from "react";
 import htmlImg from "../../assets/html.jpeg";
 import { FiExternalLink, FiThumbsUp, FiThumbsDown } from "react-icons/fi";
+import { useNavigate } from "react-router-dom";
 import "./ProjectCard.css";
 
 const ProjectCard = ({ project }) => {
+  const navigate = useNavigate();
+
   return (
     <div
       key={project.id}
@@ -29,16 +30,22 @@ const ProjectCard = ({ project }) => {
         <div className="aura-open">
           <div className="aura">
             <span className="upvote vote">
-              <FiThumbsUp size={16} style={{marginRight: 4}} />
+              <FiThumbsUp size={16} style={{ marginRight: 4 }} />
               {project.upvote}
             </span>
             <span className="downvote vote">
-              <FiThumbsDown size={16} style={{marginRight: 4}} />
+              <FiThumbsDown size={16} style={{ marginRight: 4 }} />
               {project.downvote}
             </span>
           </div>
-          <button className="open-project-btn">
-            Open <FiExternalLink style={{marginLeft: 6}} />
+          <button
+            className="open-project-btn"
+            onClick={(event) => {
+              event.stopPropagation();
+              navigate(`/projects/${project.id}`);
+            }}
+          >
+            Open <FiExternalLink style={{ marginLeft: 6 }} />
           </button>
         </div>
       </div>

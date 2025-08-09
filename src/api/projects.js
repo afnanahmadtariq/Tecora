@@ -26,20 +26,27 @@ export const fetchProjects = async () => {
 };
 
 export const fetchProjectDetails = async (id) => {
+  // Validate that id is a valid integer
+  if (!Number.isInteger(Number(id))) {
+    throw new Error("Invalid project ID");
+  }
+
   try {
-    const response = await fetch(import.meta.env.VITE_BACKEND_URL+'/api/projects/id',{
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/projects/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-      }
+      },
     });
+
     if (!response.ok) {
-      throw new Error(`Failed to fetch projects: ${response.statusText}`);
+      throw new Error(`Failed to fetch project details: ${response.statusText}`);
     }
+
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error('Error fetching projects:', error);
+    console.error('Error fetching project details:', error);
     throw error;
   }
 };
