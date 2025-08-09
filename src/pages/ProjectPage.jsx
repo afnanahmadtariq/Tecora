@@ -13,9 +13,9 @@ export default function ProjectPage() {
   useEffect(() => {
     const fetchProjectsData = async () => {
       try {
-        const fetchedProject = await fetchProjectDetails(1); // Replace 1 with the actual project ID
+        const fetchedProject = await fetchProjectDetails(1);
         const fetchedMyProjects = await fetchProjects();
-        const fetchedRelatedProjects = await fetchProjects(); // Adjust API logic if needed
+        const fetchedRelatedProjects = await fetchProjects();
 
         setProject(fetchedProject);
         setMyProjects(fetchedMyProjects);
