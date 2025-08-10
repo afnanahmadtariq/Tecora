@@ -12,10 +12,10 @@ const services = [
 export default function Home() {
   return (
     <div className="max-w-7xl mx-auto px-12">
-      <section className="mb-20">
+      <section className="mb-20 flex flex-row">
         <div className="flex items-center justify-between">
           <div className="max-w-2xl">
-            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            <h1 className="text-4xl font-bold mb-4 bg-primary-gradient bg-clip-text text-transparent">
               Welcome to Tecora Communications
             </h1>
             <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
@@ -23,13 +23,16 @@ export default function Home() {
               answers to tough questions or looking to collaborate on projects, Tecora connects you
               with the right minds to help you learn, grow, and succeed!
             </p>
-            <button className="bg-blue-500 text-white px-6 py-3 rounded-md hover:bg-blue-600 transition-colors">
+            <button className="bg-primary-gradient text-white px-6 py-3 rounded-md transition-colors">
               Sign Up
             </button>
           </div>
           <div className="w-96 h-96 relative">
             {/* Add your logo/illustration here */}
           </div>
+        </div>
+        <div>
+          <img src="/main-logo.svg" alt="main Logo" className="w-96 h-96 object-contain" />
         </div>
       </section>
 

@@ -14,6 +14,9 @@ export default {
       transitionProperty: {
         'opacity': 'opacity',
       },
+      backgroundImage: {
+        'primary-gradient': 'linear-gradient(90deg, #4EE8F2 0%, #0F4C75 49%)',
+      },
     },
   },
   plugins: [],
