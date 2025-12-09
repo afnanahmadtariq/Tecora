@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { PostCard } from '../components/PostCard'
-import { X, MessageCircle } from 'lucide-react'
+import { X, MessageCircle, Send } from 'lucide-react'
 import { fetchPosts, fetchReplies, sendReply } from "../api/posts";
 
 export default function Explore() {
@@ -11,17 +11,15 @@ export default function Explore() {
   const [replies, setReplies] = useState([]) 
   const [loading, setLoading] = useState(true);
   const [replyText, setReplyText] = useState("");
-  const [replyingTo, setReplyingTo] = useState(null);
-  const [votedPosts, setVotedPosts] = useState({}); 
+  const [replyLoading, setReplyLoading] = useState(false);
 
   useEffect(() => {
     const fetch = async () => {
       try {
         const posts = await fetchPosts();
-        console.log(posts)
-        setPosts(posts);
+        setPosts(posts || []);
       } catch (err) {
-        console.log('Failed to load feed. Please try again later.', err);
+        console.log('Failed to load feed.', err);
       } finally {
         setLoading(false);
       }
@@ -33,83 +31,65 @@ export default function Explore() {
     setSelectedPost(posts.find((post) => post.id === postId));
   };
 
-  const handleReply = (postId, username = "") => {
-    // setSelectedPost(posts.find((post) => post.id === postId));
-    // setReplyingTo(postId);
-    // setReplyText(username ? `@${username} ` : "");
-  };
-  const submitReply = (postId) => {
+  const submitReply = async (postId) => {
     if (replyText.trim()) {
-      const text = replyText.trim();
-      sendReply(postId, text);
-      setReplyText("");
-      setReplyingTo(null);
-      updateSelectedPost(postId);
-      refreshReplies(postId);
+      setReplyLoading(true);
+      try {
+        await sendReply(postId, replyText.trim());
+        setReplyText("");
+        refreshReplies(postId);
+      } catch (err) {
+        console.error("Failed to submit reply", err);
+      } finally {
+        setReplyLoading(false);
+      }
     }
   };
 
   const refreshReplies = async(postId) => {
     try {
       const replies = await fetchReplies(postId);
-      setReplies(replies);
+      setReplies(replies || []);
     } catch (err) {
-      console.log('Failed to load replies. Please try again later.', err);
-    } finally {
-      setLoading(false);
+      console.log('Failed to load replies.', err);
     }
   }
+
   const handleViewReplies = (postId) => {
     updateSelectedPost(postId);
     refreshReplies(postId);
   }
 
-  const handleReplyVote = (postId, replyId, voteType) => {
-    setPosts(
-      posts.map((post) => {
-        if (post.id === postId) {
-          const updatedReplies = post.replies.map((reply) => {
-            if (reply.id === replyId) {
-              if (
-                voteType === "upvote" &&
-                reply.upvotes < reply.downvotes + reply.upvotes + 1
-              ) {
-                return { ...reply, upvotes: reply.upvotes + 1 };
-              } else if (
-                voteType === "downvote" &&
-                reply.downvotes < reply.upvotes + reply.downvotes + 1
-              ) {
-                return { ...reply, downvotes: reply.downvotes + 1 };
-              }
-            }
-            return reply;
-          });
-          return { ...post, replies: updatedReplies };
-        }
-        return post;
-      })
-    );
-    updateSelectedPost(postId);
-  };
-
-  const handleVote = (postId, type) => {
-    // Handle voting logic
-  }
-
   const handleCloseReplies = () => {
     setSelectedPost(null)
+    setReplies([]);
   }
+
+  // Placeholder vote handler
+  const handleVote = (postId, type) => {
+    // Optimistic update could go here
+    console.log(`Voted ${type} on ${postId}`);
+  }
+
   if (loading) {
-    return <p>Loading feed...</p>;
+    return (
+      <div className="flex items-center justify-center min-h-[50vh]">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    );
   }
+
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div className={`grid gap-8 ${selectedPost ? 'grid-cols-1 lg:grid-cols-3' : 'grid-cols-1'}`}>
-        <div className={selectedPost ? 'lg:col-span-2' : ''}>
-          <h1 className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-8">
-            Explore
-          </h1>
-          <div className="space-y-4">
+    <div className="max-w-[1600px] mx-auto transition-all duration-300">
+      <div className={`grid gap-6 transition-all duration-300 ${selectedPost ? 'grid-cols-1 lg:grid-cols-3' : 'grid-cols-1 max-w-4xl mx-auto'}`}>
+        
+        {/* Posts Feed */}
+        <div className={`space-y-6 ${selectedPost ? 'lg:col-span-2' : ''}`}>
+           <div className="flex items-center justify-between mb-2">
+             <h1 className="text-3xl font-bold tracking-tight text-foreground">Explore</h1>
+           </div>
+          
+          <div className="space-y-6">
             {posts.map((post) => (
               <PostCard
                 key={post.id}
@@ -121,153 +101,76 @@ export default function Explore() {
           </div>
         </div>
 
+        {/* Replies Sidebar */}
         {selectedPost && (
           <div className="lg:col-span-1">
-            <div className="sticky top-24 bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
-              <div className="flex items-center justify-between p-4 border-b">
-                {/* Header Section */}
-                <div className='flex-1'>
-                  <h2 className="text-xl font-semibold text-blue-600 dark:text-blue-400">Replies</h2>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">
-                        {selectedPost.date}
-                      </p>
-                      <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-                        {selectedPost.title}
-                      </h2>
-                </div>  
+            <div className="sticky top-20 bg-card border border-border rounded-xl shadow-lg flex flex-col h-[calc(100vh-6rem)] overflow-hidden animate-in slide-in-from-right-10 duration-300">
+              
+              {/* Header */}
+              <div className="p-4 border-b border-border flex items-center justify-between bg-muted/30">
+                <div>
+                   <h2 className="font-semibold text-foreground">Replies</h2>
+                   <p className="text-xs text-muted-foreground truncate max-w-[200px]">{selectedPost.title}</p>
+                </div>
                 <button
                   onClick={handleCloseReplies}
-                  className="p-1 rounded-full hover:bg-gray-100"
+                  className="p-2 hover:bg-accent rounded-full transition-colors"
                 >
-                  <X className="w-5 h-5" />
+                  <X className="w-5 h-5 text-muted-foreground" />
                 </button>
               </div>
-              {replies.length > 0 ? (
-                <div className="max-h-[calc(100vh-12rem)] overflow-y-auto p-4 space-y-4">
-                  {/* Reply List */}
-                  <div className="flex-1 overflow-auto p-6 space-y-4">
-                    {replies.map((reply) => (
-                      <div
-                        key={reply.id}
-                        className="flex items-start border-b pb-4 last:border-b-0"
-                      >
-                        {/* Profile Icon */}
-                        <a
-                          href="#"
-                          className="hover:scale-105 transition-transform duration-200 mr-3"
-                        >
-                          <img
-                            src="https://www.w3schools.com/w3images/avatar2.png"
-                            alt="Profile"
-                            className="w-8 h-8 rounded-full cursor-pointer"
-                          />
-                        </a>
 
-                        {/* Reply Content */}
-                        <div className="flex-1">
-                          <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">
-                            {reply.text}
-                          </p>
-                          <div className="flex items-center text-xs text-gray-400 space-x-4">
-                            <span>{reply.time}</span>
-                            <button
-                              onClick={() =>
-                                handleReplyVote(
-                                  selectedPost.id,
-                                  reply.id,
-                                  "upvote"
-                                )
-                              }
-                              className="flex items-center space-x-1 text-gray-500 hover:text-blue-500 transition duration-200"
-                            >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-4 w-4"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                              >
-                                <path
-                                  fillRule="evenodd"
-                                  d="M3.293 9.707a1 1 0 010-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L4.707 9.707a1 1 0 01-1.414 0z"
-                                  clipRule="evenodd"
-                                />
-                              </svg>
-                              <span>{reply.upvotes}</span>
-                            </button>
-                            <button
-                              onClick={() =>
-                                handleReplyVote(
-                                  selectedPost.id,
-                                  reply.id,
-                                  "downvote"
-                                )
-                              }
-                              className="flex items-center space-x-1 text-gray-500 hover:text-red-500 transition duration-200"
-                            >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-4 w-4"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                              >
-                                <path
-                                  fillRule="evenodd"
-                                  d="M16.707 10.293a1 1 0 010 1.414l-6 6a1 1 0 01-1.414 0l-6-6a1 1 0 111.414-1.414L9 14.586V3a1 1 0 012 0v11.586l4.293-4.293a1 1 0 011.414 0z"
-                                  clipRule="evenodd"
-                                />
-                              </svg>
-                              <span>{reply.downvotes}</span>
-                            </button>
-                            <button
-                              onClick={() =>
-                                handleReply(selectedPost.id, reply.username)
-                              }
-                              className="text-gray-500 hover:text-green-500 transition duration-200"
-                            >
-                              Reply
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ) : (
-                <div className="p-8 text-center text-gray-500">
-                  <MessageCircle className="w-12 h-12 mx-auto mb-2 opacity-50" />
-                  <p>No replies yet</p>
-                </div>
-              )}
-              {/* Reply Input */}
-              <div className="p-4 border-t">
-                <div className="flex items-center">
-                  <input
-                    type="text"
-                    value={replyText}
-                    onChange={(e) => setReplyText(e.target.value)}
-                    placeholder="Add your reply..."
-                    className="w-full p-2 text-sm bg-gray-100 dark:bg-gray-700 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  />
-                  <button
-                    onClick={() => submitReply(selectedPost.id)}
-                    className="p-2 bg-blue-500 hover:bg-blue-600 text-white rounded-r-md flex items-center justify-center"
-                    title="Send Reply"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                        clipRule="evenodd"
+              {/* Replies List */}
+              <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                {replies.length > 0 ? (
+                  replies.map((reply) => (
+                    <div key={reply.id} className="group flex gap-3 p-3 rounded-lg hover:bg-accent/50 transition-colors">
+                      <img
+                        src={reply.profilePic || "https://www.w3schools.com/w3images/avatar2.png"}
+                        alt="Profile"
+                        className="w-8 h-8 rounded-full object-cover ring-1 ring-border"
                       />
-                    </svg>
-                  </button>
-                </div>
+                      <div className="flex-1 space-y-1">
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-medium text-foreground">{reply.username || "User"}</span>
+                          <span className="text-xs text-muted-foreground">{reply.time}</span>
+                        </div>
+                        <p className="text-sm text-muted-foreground group-hover:text-foreground transition-colors leading-relaxed">
+                          {reply.text}
+                        </p>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="flex flex-col items-center justify-center h-full text-muted-foreground space-y-2 opacity-50">
+                    <MessageCircle className="w-12 h-12" />
+                    <p>No replies yet</p>
+                  </div>
+                )}
               </div>
+
+              {/* Input Area */}
+              <div className="p-4 bg-muted/30 border-t border-border mt-auto">
+                 <div className="relative flex items-center">
+                    <input
+                      type="text"
+                      value={replyText}
+                      onChange={(e) => setReplyText(e.target.value)}
+                      onKeyDown={(e) => e.key === 'Enter' && submitReply(selectedPost.id)}
+                      placeholder="Write a reply..."
+                      disabled={replyLoading}
+                      className="w-full pl-4 pr-12 py-3 bg-background border border-border rounded-full text-sm focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-muted-foreground/50"
+                    />
+                    <button 
+                       onClick={() => submitReply(selectedPost.id)}
+                       disabled={!replyText.trim() || replyLoading}
+                       className="absolute right-2 p-1.5 bg-primary text-primary-foreground rounded-full hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                    >
+                       <Send className="w-4 h-4 ml-0.5" />
+                    </button>
+                 </div>
+              </div>
+
             </div>
           </div>
         )}

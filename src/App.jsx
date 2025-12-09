@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useState } from "react";
 import Sidebar from "./components/Sidebar";
 import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
@@ -17,35 +18,51 @@ import useThemeFavicon from "../useThemeFavicon";
 import { ThemeProvider } from "./context/ThemeContext";
 import { UserProvider } from "./context/UserContext";
 import Profile from "./pages/profile/Profile";
+import Community from "./pages/Community"; // Added import for Community
 
 function App() {
   useThemeFavicon();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   return (
     <ThemeProvider>
       <UserProvider>
         <Router>
-          <div className="flex-1 min-h-screen bg-blue-50/30 dark:bg-gray-900 transition-colors duration-200">
-            <Navbar />
-            <div className="flex">
-              <Sidebar />
-              <main className="container mx-auto px-4 py-8 no-scrollbar">
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/explore" element={<Explore />} />
-                  <Route path="/projects" element={<Projects />} />
-                  <Route path="/projects/:projectId" element={<ProjectDetails />} />
-                  <Route path="/myworks" element={<MyWorks />} />
-                  <Route path="/posts/:postId" element={<PostPage />} />
-                  <Route path="/topics" element={<Topics />} />
-                  <Route path="/experts" element={<TopExperts />} />
-                  <Route path="/saved" element={<Saved />} />
-                  <Route path="/profile" element={<MyProfile />} />
-                  <Route path="/settings" element={<Settings />} />
-                  <Route path="/subscription" element={<Subscription />} />
-                  <Route path="/expertProfile" element={<Profile />} />
-                </Routes>
+          <div className="min-h-screen bg-background text-foreground transition-colors duration-300 font-sans selection:bg-primary/20">
+            <Navbar onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)} />
+            <div className="flex relative items-start">
+              <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+              <main className="flex-1 w-full min-w-0 px-4 sm:px-6 md:px-8 py-8 transition-all duration-300 animate-in fade-in slide-in-from-bottom-4">
+                 <div className="max-w-7xl mx-auto">
+                    <Routes>
+                      <Route path="/" element={<Home />} />
+                      <Route path="/explore" element={<Explore />} />
+                      <Route path="/projects" element={<Projects />} />
+                      <Route path="/projects/:projectId" element={<ProjectDetails />} />
+                      <Route path="/myworks" element={<MyWorks />} />
+                      <Route path="/post/:postId" element={<PostPage />} />
+                       {/* Legacy route for posts if used elsewhere */}
+                      <Route path="/posts/:postId" element={<PostPage />} />
+                      <Route path="/topics" element={<Topics />} />
+                      <Route path="/experts" element={<TopExperts />} />
+                      <Route path="/saved" element={<Saved />} />
+                      <Route path="/profile" element={<MyProfile />} />
+                      <Route path="/settings" element={<Settings />} />
+                      <Route path="/subscription" element={<Subscription />} />
+                      <Route path="/expertProfile" element={<Profile />} />
+                      <Route path="/community" element={<Community />} />
+                    </Routes>
+                 </div>
               </main>
+              {/* Mobile overlay */}
+              {isSidebarOpen && (
+                <div 
+                  className="fixed inset-0 bg-black/50 z-40 md:hidden backdrop-blur-sm animate-in fade-in"
+                  onClick={() => setIsSidebarOpen(false)}
+                />
+              )}
             </div>
+            
           </div>
         </Router>
       </UserProvider>

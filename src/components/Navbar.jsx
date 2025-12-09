@@ -1,13 +1,13 @@
 import { useState, useEffect, useRef } from 'react';
-import { Link} from 'react-router-dom';
-import { FiSearch, FiMoon, FiSun } from 'react-icons/fi';
+import { Link, useNavigate } from 'react-router-dom';
+import { FiSearch, FiMoon, FiSun, FiMenu, FiUser, FiSettings, FiLogOut } from 'react-icons/fi';
 import { SignUpModal, LoginModal } from './AuthModals';
 import { PostModal } from './PostModal';
 import { useTheme } from '../context/ThemeContext';
-import { useNavigate } from 'react-router-dom';
 import { useUser } from '../context/UserContext';
+import clsx from 'clsx';
 
-export default function Navbar() {
+export default function Navbar({ onMenuClick }) {
   const { isLoggedIn, logout, getProfilePic } = useUser();
   const { isDark, toggleTheme } = useTheme();
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
@@ -16,6 +16,7 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef(null);
   const navigate = useNavigate();
+
   const handleSwitchToLogin = () => {
     setIsSignUpOpen(false);
     setIsLoginOpen(true);
@@ -30,141 +31,119 @@ export default function Navbar() {
     setIsLoginOpen(false);
   };
 
-  const handleMenuToggle = () => {
-    setIsMenuOpen((prev) => !prev);
-  };
-  
-  const handleThemeChange = () => {
-    toggleTheme();
-    setIsMenuOpen(false);
-  };
-
-  const handleProfileClick = () => {
-    navigate("/profile");
-    setIsMenuOpen(false);
-  };
-
-  const handleSubscriptionClick = () => {
-    navigate("/subscription");
-    setIsMenuOpen(false);
-  };
-
-  const handleSettingsClick = () => {
-    navigate("/settings");
-    setIsMenuOpen(false);
-  };
-
   const handleLogout = () => {
     logout();
     setIsMenuOpen(false);
     navigate("/");
   };
 
-  const handleOutsideClick = (e) => {
-    if (menuRef.current && !menuRef.current.contains(e.target)) {
-      setIsMenuOpen(false);
-    }
-  };
-
+  // Close menu when clicking outside
   useEffect(() => {
-    document.addEventListener('mousedown', handleOutsideClick);
-    return () => {
-      document.removeEventListener('mousedown', handleOutsideClick);
+    const handleOutsideClick = (e) => {
+      if (menuRef.current && !menuRef.current.contains(e.target)) {
+        setIsMenuOpen(false);
+      }
     };
+    document.addEventListener('mousedown', handleOutsideClick);
+    return () => document.removeEventListener('mousedown', handleOutsideClick);
   }, []);
 
   return (
     <>
-      <nav className="sticky top-0 z-10 w-full bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-4 transition-colors duration-200">
-        <div className="container mx-auto flex items-center justify-between">
-          <Link to="/" className="flex items-center">
-            <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">Tecora</span>
-          </Link>
-          <div className="flex-1 max-w-2xl">
-              <div className="flex-1 relative">
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-gray-100 transition-colors duration-200"
-                />
-                <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-gray-300" />
-              </div>
+      <nav className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container mx-auto px-4 h-16 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            {/* Mobile Menu Button */}
+            <button 
+              onClick={onMenuClick}
+              className="md:hidden p-2 hover:bg-accent rounded-md text-foreground"
+            >
+              <FiMenu className="h-6 w-6" />
+            </button>
+            
+            <Link to="/" className="flex items-center gap-2">
+               <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
+                  <span className="text-primary-foreground font-bold text-lg">T</span>
+               </div>
+              <span className="text-xl font-bold bg-gradient-to-r from-primary to-blue-600 bg-clip-text text-transparent hidden sm:block">
+                Tecora
+              </span>
+            </Link>
           </div>
-          <div className="flex items-center space-x-4">
+
+          <div className="flex-1 max-w-md hidden sm:block">
+            <div className="relative group">
+              <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" />
+              <input
+                type="text"
+                placeholder="Search..."
+                className="w-full bg-background border border-input rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+              />
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 sm:gap-4">
             <button
               onClick={() => setIsPostOpen(true)}
-              className="bg-[#38BDF8] text-white px-4 py-2 rounded-md hover:bg-blue-500 transition-colors"
+              className="hidden sm:flex items-center justify-center h-9 px-4 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors shadow-sm hover:shadow-md"
             >
               New Post
             </button>
+
             <button
               onClick={toggleTheme}
-              className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+              className="p-2 rounded-full hover:bg-accent text-muted-foreground hover:text-foreground transition-colors"
               aria-label="Toggle dark mode"
             >
-              {isDark ? <FiMoon className="h-5 w-5 text-gray-100" /> : <FiSun className="h-5 w-5" />}
+              {isDark ? <FiMoon className="h-5 w-5" /> : <FiSun className="h-5 w-5" />}
             </button>
 
-            {/* Conditionally render based on login status */}
             {isLoggedIn ? (
-              <div className="relative">
-                <div
-                  onClick={handleMenuToggle}
-                  className="w-10 h-10 rounded-full bg-gray-300 cursor-pointer hover:ring-2 hover:ring-blue-500"
+              <div className="relative" ref={menuRef}>
+                <button
+                  onClick={() => setIsMenuOpen(!isMenuOpen)}
+                  className="flex items-center gap-2 p-1 rounded-full hover:bg-accent transition-colors focus:outline-none focus:ring-2 focus:ring-primary/20"
                 >
                   <img
-                    src={getProfilePic()} 
+                    src={getProfilePic()}
                     alt="Profile"
-                    className="w-full h-full rounded-full object-cover"
+                    className="w-8 h-8 rounded-full object-cover ring-2 ring-background"
                   />
-                </div>
+                </button>
+
                 {isMenuOpen && (
-                  <div
-                    ref={menuRef}
-                    className="absolute right-0 mt-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md shadow-lg w-48 z-20"
-                  >
-                    <ul className="text-gray-800 dark:text-gray-100">
-                      <li
-                        onClick={handleProfileClick}
-                        className="px-4 py-2 hover:bg-blue-100 dark:hover:bg-gray-700 cursor-pointer"
-                      >
-                        Profile
-                      </li>
-                      <li
-                        onClick={handleThemeChange}
-                        className="px-4 py-2 hover:bg-blue-100 dark:hover:bg-gray-700 cursor-pointer"
-                      >
-                        Theme
-                      </li>
-                      <li
-                        onClick={handleSubscriptionClick}
-                        className="px-4 py-2 hover:bg-blue-100 dark:hover:bg-gray-700 cursor-pointer"
-                      >
-                        Subscription
-                      </li>
-                      <li
-                        onClick={handleSettingsClick}
-                        className="px-4 py-2 hover:bg-blue-100 dark:hover:bg-gray-700 cursor-pointer"
-                      >
-                        Settings
-                      </li>
-                      <li
-                        onClick={handleLogout}
-                        className="px-4 py-2 hover:bg-blue-100 dark:hover:bg-gray-700 cursor-pointer"
-                      >
-                        Log Out
-                      </li>
-                    </ul>
+                  <div className="absolute right-0 mt-2 w-56 rounded-xl border border-border bg-popover p-1 shadow-lg text-popover-foreground animate-in fade-in slide-in-from-top-2 duration-200">
+                    <div className="px-2 py-1.5 text-sm font-semibold border-b border-border/50 mb-1">
+                      My Account
+                    </div>
+                    <button onClick={() => { navigate("/profile"); setIsMenuOpen(false); }} className="w-full flex items-center gap-2 px-2 py-1.5 text-sm rounded-md hover:bg-accent hover:text-accent-foreground text-left">
+                      <FiUser className="h-4 w-4" /> Profile
+                    </button>
+                    <button onClick={() => { navigate("/settings"); setIsMenuOpen(false); }} className="w-full flex items-center gap-2 px-2 py-1.5 text-sm rounded-md hover:bg-accent hover:text-accent-foreground text-left">
+                      <FiSettings className="h-4 w-4" /> Settings
+                    </button>
+                     <div className="h-px bg-border/50 my-1" />
+                    <button onClick={handleLogout} className="w-full flex items-center gap-2 px-2 py-1.5 text-sm rounded-md hover:bg-destructive/10 text-destructive hover:text-destructive text-left">
+                      <FiLogOut className="h-4 w-4" /> Log out
+                    </button>
                   </div>
                 )}
               </div>
             ) : (
-              <button
-                onClick={() => setIsLoginOpen(true)}
-                className="bg-[#38BDF8] text-white px-4 py-2 rounded-md hover:bg-blue-500 transition-colors"
-              >
-                Log in
-              </button>
+              <div className="flex items-center gap-2">
+                 <button
+                  onClick={() => setIsLoginOpen(true)}
+                  className="text-sm font-medium hover:text-primary px-3 py-2 transition-colors"
+                >
+                  Log in
+                </button>
+                <button
+                  onClick={() => setIsSignUpOpen(true)}
+                  className="px-4 py-2 rounded-full bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors shadow-sm"
+                >
+                  Sign up
+                </button>
+              </div>
             )}
           </div>
         </div>
