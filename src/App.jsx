@@ -39,7 +39,7 @@ function App() {
                       <Route path="/explore" element={<Explore />} />
                       <Route path="/projects" element={<Projects />} />
                       <Route path="/projects/:projectId" element={<ProjectDetails />} />
-                      <Route path="/myworks" element={<MyWorks />} />
+                      <Route path="/queries" element={<MyWorks />} />
                       <Route path="/post/:postId" element={<PostPage />} />
                        {/* Legacy route for posts if used elsewhere */}
                       <Route path="/posts/:postId" element={<PostPage />} />

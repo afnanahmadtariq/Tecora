@@ -62,7 +62,7 @@ export default function Posts() {
 
   return (
     <div>
-      <h1 className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-8">My Posts</h1>
+      <h1 className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-8">Queries</h1>
 
       {/* Tab Navigation */}
       <div className="flex space-x-4 mb-6">
