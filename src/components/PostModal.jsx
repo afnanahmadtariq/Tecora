@@ -1,56 +1,72 @@
 import React, { useState } from "react";
 import { Modal } from "./Modal";
 import { createPost } from "../api/posts";
+import { FiImage, FiX } from "react-icons/fi";
 
 export function PostModal({ isOpen, onClose }) {
   const [activeTab, setActiveTab] = useState("post");
-  const [postContent, setPostContent] = useState("");
+  const [postContent, setPostContent] = useState(""); // Will map to 'description'
   const [mediaUrl, setMediaUrl] = useState("");
-  const [question, setQuestion] = useState("");
-  const [pollOptions, setPollOptions] = useState(["", ""]);
   const [title, setTitle] = useState("");
+  const [pollOptions, setPollOptions] = useState(["", ""]);
+  
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
   const handleSubmit = async () => {
+    if (!title.trim()) {
+      setError("Title is required");
+      return;
+    }
+
     setLoading(true);
     setError("");
     setSuccess("");
+
     let postData;
+    // Map internal state to API payload expected by PostCard (description, etc.)
     switch (activeTab) {
       case "post":
         postData = {
           type: "post",
           title: title.trim(),
-          content: postContent.trim(),
-          media: mediaUrl,
+          description: postContent.trim(), // API usually expects 'description' if PostCard reads 'description'
+          media: mediaUrl, // Note: Local blob URL, see comment below
         };
         break;
       case "question":
         postData = {
           type: "question",
           title: title.trim(),
-          content: question.trim(),
+          description: postContent.trim(), // Reusing postContent for question details
         };
         break;
       case "poll":
         postData = {
           type: "poll",
           title: title.trim(),
-          options: pollOptions.map(opt => opt.trim()).filter(opt => opt !== ""),
+          description: postContent.trim(), // Optional description for poll
+          options: pollOptions.map(opt => ({ option: opt.trim(), votes: 0 })).filter(o => o.option !== ""),
         };
         break;
       default:
         setLoading(false);
         return;
     }
+
     try {
       const res = await createPost(postData);
+      // Since createPost returns a Response object or null
       if (res && res.ok) {
         setSuccess("Post created successfully!");
         setTimeout(() => {
           setSuccess("");
+          // Reset form
+          setTitle("");
+          setPostContent("");
+          setMediaUrl("");
+          setPollOptions(["", ""]);
           onClose();
         }, 1000);
       } else {
@@ -58,6 +74,7 @@ export function PostModal({ isOpen, onClose }) {
       }
     } catch (err) {
       setError("An error occurred. Please try again.");
+      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -70,166 +87,176 @@ export function PostModal({ isOpen, onClose }) {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const fileUrl = URL.createObjectURL(file); // Create an object URL for the file
-      setMediaUrl(fileUrl);
-    }
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    const file = e.dataTransfer.files[0];
-    if (file) {
       const fileUrl = URL.createObjectURL(file);
       setMediaUrl(fileUrl);
     }
   };
 
-  const handleDragOver = (e) => {
-    e.preventDefault(); // Prevent default behavior to allow drop
+  const removeMedia = () => {
+     setMediaUrl("");
   };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <h2 className="text-2xl dark:text-[var(--text-dark)] text-[var(--text-light)] font-bold mb-4">
-        Create a {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
-      </h2>
-      <div className="mb-4">
-        <div className="flex border-b text-[var(--text-light)] dark:text-[var(--text-dark)]">
-          <button
-            className={`py-2 px-4 focus:outline-none ${activeTab === "post" ? "border-b-2 border-blue-500 font-semibold" : ""}`}
-            aria-pressed={activeTab === "post"}
-            onClick={() => setActiveTab("post")}
-          >
-            Post
-          </button>
-          <button
-            className={`py-2 px-4 focus:outline-none ${activeTab === "question" ? "border-b-2 border-blue-500 font-semibold" : ""}`}
-            aria-pressed={activeTab === "question"}
-            onClick={() => setActiveTab("question")}
-          >
-            Question
-          </button>
-          <button
-            className={`py-2 px-4 focus:outline-none ${activeTab === "poll" ? "border-b-2 border-blue-500 font-semibold" : ""}`}
-            aria-pressed={activeTab === "poll"}
-            onClick={() => setActiveTab("poll")}
-          >
-            Poll
-          </button>
-        </div>
-      </div>
-      <div className="space-y-4">
-        <input
-          type="text"
-          placeholder="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          className="w-full p-2 border rounded bg-white dark:bg-[var(--accent-dark)]"
-          aria-label="Title"
-        />
-      </div>
-      {activeTab === "post" && (
-        <div className="space-y-4">
-          <textarea
-            placeholder="What's on your mind?"
-            value={postContent}
-            onChange={(e) => setPostContent(e.target.value)}
-            className="w-full p-2 border rounded min-h-[100px] bg-white dark:bg-[var(--accent-dark)]"
-            aria-label="Post content"
-          />
-          <div
-            className="w-full p-4 border rounded border-dashed"
-            onDrop={handleDrop}
-            onDragOver={handleDragOver}
-          >
-            <p className="text-center text-gray-600">
-              Drag & drop an image/video or click to select
-            </p>
-            <input
-              type="file"
-              accept="image/*, video/*"
-              onChange={handleFileChange}
-              className="hidden"
-              id="file-upload"
-            />
-            <label
-              htmlFor="file-upload"
-              className="cursor-pointer w-full text-center"
-            >
-              <span
-                role="img"
-                aria-label="camera"
-                className="block text-3xl text-gray-500"
-              >
-                📸
-              </span>
-              <p className="text-center text-gray-600">Add Image/Video</p>
-            </label>
-            {mediaUrl && (
-              <div className="mt-4">
-                <p>Media Preview:</p>
-                {mediaUrl.endsWith(".mp4") || mediaUrl.endsWith(".mov") ? (
-                  <video controls className="w-full mt-2">
-                    <source src={mediaUrl} type="video/mp4" />
-                    Your browser does not support the video tag.
-                  </video>
-                ) : (
-                  <img src={mediaUrl} alt="Preview" className="w-full mt-2" />
-                )}
-              </div>
+      <div className="flex flex-col h-full bg-background text-foreground rounded-lg overflow-hidden">
+         {/* Header */}
+         <div className="flex items-center justify-between p-4 border-b border-border">
+            <h2 className="text-xl font-bold bg-gradient-to-r from-blue-600 to-sky-400 bg-clip-text text-transparent">
+               Create Post
+            </h2>
+            <button onClick={onClose} className="p-1 hover:bg-accent rounded-full transition-colors">
+               <FiX className="w-5 h-5 text-muted-foreground" />
+            </button>
+         </div>
+
+         {/* Tabs */}
+         <div className="flex border-b border-border bg-muted/30">
+            {["post", "question", "poll"].map((tab) => (
+               <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={`flex-1 py-3 text-sm font-medium transition-all relative ${
+                     activeTab === tab 
+                        ? "text-primary" 
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  }`}
+               >
+                  {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                  {activeTab === tab && (
+                     <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary rounded-full mx-4" />
+                  )}
+               </button>
+            ))}
+         </div>
+
+         {/* Content */}
+         <div className="p-6 space-y-5">
+            {/* Title Input */}
+            <div>
+               <label className="block text-sm font-medium text-muted-foreground mb-1.5">Title</label>
+               <input
+                  type="text"
+                  placeholder="Give your post a title"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  className="w-full px-4 py-2.5 bg-background border border-input rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-muted-foreground/50"
+               />
+            </div>
+
+            {/* Description Input */}
+            <div>
+               <label className="block text-sm font-medium text-muted-foreground mb-1.5">
+                  {activeTab === 'question' ? 'Details' : 'Description'}
+               </label>
+               <textarea
+                  placeholder={activeTab === 'question' ? "Describe your question in detail..." : "What's on your mind?"}
+                  value={postContent}
+                  onChange={(e) => setPostContent(e.target.value)}
+                  className="w-full p-4 bg-background border border-input rounded-xl min-h-[140px] focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all placeholder:text-muted-foreground/50 resize-y"
+               />
+            </div>
+
+            {/* Media Upload for Post */}
+            {activeTab === "post" && (
+               <div className="space-y-3">
+                  <div className="flex items-center gap-4">
+                     <label className="flex items-center gap-2 px-4 py-2 bg-secondary/50 hover:bg-secondary text-secondary-foreground rounded-lg cursor-pointer transition-colors text-sm font-medium">
+                        <FiImage className="w-4 h-4" />
+                        <span>Add Media</span>
+                        <input
+                           type="file"
+                           accept="image/*, video/*"
+                           onChange={handleFileChange}
+                           className="hidden"
+                        />
+                     </label>
+                  </div>
+
+                  {mediaUrl && (
+                     <div className="relative rounded-xl overflow-hidden border border-border bg-black/5 group">
+                        <button 
+                           onClick={removeMedia}
+                           className="absolute top-2 right-2 p-1.5 bg-black/50 hover:bg-black/70 text-white rounded-full transition-colors opacity-0 group-hover:opacity-100"
+                        >
+                           <FiX className="w-4 h-4" />
+                        </button>
+                        {mediaUrl.endsWith(".mp4") || mediaUrl.endsWith(".mov") ? (
+                           <video controls className="w-full max-h-60 object-contain">
+                              <source src={mediaUrl} type="video/mp4" />
+                           </video>
+                        ) : (
+                           <img src={mediaUrl} alt="Preview" className="w-full max-h-60 object-contain" />
+                        )}
+                     </div>
+                  )}
+               </div>
             )}
-          </div>
-        </div>
-      )}
-      {activeTab === "question" && (
-        <div className="space-y-4">
-          <textarea
-            placeholder="Ask a question..."
-            value={question}
-            onChange={(e) => setQuestion(e.target.value)}
-            className="w-full p-2 border rounded min-h-[100px]"
-            aria-label="Question content"
-          />
-        </div>
-      )}
-      {activeTab === "poll" && (
-        <div className="space-y-4">
-          {pollOptions.map((option, index) => (
-            <input
-              key={index}
-              placeholder={`Option ${index + 1}`}
-              value={option}
-              onChange={(e) => {
-                const newOptions = [...pollOptions];
-                newOptions[index] = e.target.value;
-                setPollOptions(newOptions);
-              }}
-              className="w-full p-2 border rounded"
-              aria-label={`Poll option ${index + 1}`}
-            />
-          ))}
-          <button
-            onClick={addPollOption}
-            className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
-            type="button"
-          >
-            Add Option
-          </button>
-        </div>
-      )}
-      {error && (
-        <div className="w-full mt-2 text-red-600 text-center">{error}</div>
-      )}
-      {success && (
-        <div className="w-full mt-2 text-green-600 text-center">{success}</div>
-      )}
-      <button
-        onClick={handleSubmit}
-        className={`w-full mt-4 px-4 py-2 rounded text-white transition-colors duration-200 ${loading ? "bg-blue-300 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"}`}
-        disabled={loading}
-      >
-        {loading ? "Posting..." : "Post"}
-      </button>
+
+            {/* Poll Options */}
+            {activeTab === "poll" && (
+               <div className="space-y-3">
+                  <label className="block text-sm font-medium text-muted-foreground">Options</label>
+                  {pollOptions.map((option, index) => (
+                     <div key={index} className="flex gap-2">
+                        <input
+                           placeholder={`Option ${index + 1}`}
+                           value={option}
+                           onChange={(e) => {
+                              const newOptions = [...pollOptions];
+                              newOptions[index] = e.target.value;
+                              setPollOptions(newOptions);
+                           }}
+                           className="flex-1 px-4 py-2 bg-background border border-input rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all text-sm"
+                        />
+                     </div>
+                  ))}
+                  <button
+                     onClick={addPollOption}
+                     className="text-sm text-primary hover:text-primary/80 font-medium transition-colors"
+                     type="button"
+                  >
+                     + Add another option
+                  </button>
+               </div>
+            )}
+
+            {/* Status Messages */}
+            {error && (
+               <div className="p-3 bg-destructive/10 border border-destructive/20 text-destructive text-sm rounded-lg text-center">
+                  {error}
+               </div>
+            )}
+            {success && (
+               <div className="p-3 bg-green-500/10 border border-green-500/20 text-green-600 dark:text-green-400 text-sm rounded-lg text-center">
+                  {success}
+               </div>
+            )}
+
+            {/* Footer Actions */}
+            <div className="flex gap-3 pt-2">
+               <button
+                  onClick={onClose}
+                  className="flex-1 px-4 py-2.5 rounded-xl border border-border text-muted-foreground hover:bg-muted hover:text-foreground font-medium transition-colors"
+               >
+                  Cancel
+               </button>
+               <button
+                  onClick={handleSubmit}
+                  disabled={loading || !title.trim()}
+                  className="flex-1 px-4 py-2.5 rounded-xl bg-primary text-primary-foreground font-medium hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none"
+               >
+                  {loading ? (
+                     <span className="flex items-center justify-center gap-2">
+                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                        Publishing...
+                     </span>
+                  ) : (
+                     "Post"
+                  )}
+               </button>
+            </div>
+         </div>
+      </div>
     </Modal>
   );
 }

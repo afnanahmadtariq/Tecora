@@ -4,16 +4,15 @@ export function Modal({ isOpen, onClose, children }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-2xl">
-        <button
-          onClick={onClose}
-          className="float-right text-gray-500 hover:text-gray-700"
-        >
-          ✕
-        </button>
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4 animate-in fade-in duration-200">
+      <div 
+        className="w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl animate-in zoom-in-95 duration-200 relative bg-transparent"
+        onClick={(e) => e.stopPropagation()}
+      >
         {children}
       </div>
+      {/* Click outside to close */}
+      <div className="absolute inset-0 -z-10" onClick={onClose} />
     </div>
   );
 }

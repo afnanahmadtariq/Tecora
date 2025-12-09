@@ -32,7 +32,7 @@ function App() {
             <Navbar onMenuClick={() => setIsSidebarOpen(!isSidebarOpen)} />
             <div className="flex relative items-start">
               <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
-              <main className="flex-1 w-full min-w-0 px-4 sm:px-6 md:px-8 py-8 transition-all duration-300 animate-in fade-in slide-in-from-bottom-4">
+              <main className="flex-1 w-full min-w-0 px-4 sm:px-6 md:px-8 transition-all duration-300 animate-in fade-in slide-in-from-bottom-4">
                  <div className="max-w-7xl mx-auto">
                     <Routes>
                       <Route path="/" element={<Home />} />
