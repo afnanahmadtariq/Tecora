@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react'
 import { FiExternalLink } from 'react-icons/fi'
-import { fetchPosts } from "../api/posts";
+import { fetchPosts, fetchReplies, sendReply } from "../api/posts";
 
-// Mock data for right sidebar
+// Mock data for right sidebar (Static for now as no API endpoint exists)
 const trendyTopics = [
   "Programming",
   "Digital Marketing",
@@ -37,17 +37,7 @@ export default function Explore() {
         setPosts(postsData || []);
       } catch (err) {
         console.log('Failed to load feed.', err);
-             // Fallback to mock data to match visual requirements if API fails or returns empty
-             setPosts(Array(4).fill({
-                id: 1,
-                username: "Ali jee",
-                date: "Apr 20, 2024",
-                designation: "ui/ux designer at comsats",
-                profilePic: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=150&q=80",
-                title: "What tools can help streamline project management for a remote team?",
-                tags: ["UX/UI", "Website design", "Mobile Design"],
-                replies: 10
-             }));
+        setPosts([]); // No fallback to mock
       } finally {
         setLoading(false);
       }
@@ -64,22 +54,11 @@ export default function Explore() {
   const refreshReplies = async(postId) => {
     setLoadingReplies(true);
     try {
-      // Import fetchReplies if not imported, or assume it's available
-      // For now, mocking replies to match the UI if API fails or for demo
-       // const repliesData = await fetchReplies(postId);
-       // setReplies(repliesData || []);
-       
-       // MOCK REPLIES FOR DEMO VISUALIZATION
-       await new Promise(r => setTimeout(r, 600)); // Fake delay
-       setReplies([
-          { id: 1, username: "Some tool can be used", text: "You can use Jira or Trello for task management.", upvotes: "12k", downvotes: "1.4k", profilePic: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=100&q=80" },
-          { id: 2, username: "Figma? or something..", text: "Figma is great for design collaboration, but for project management, try Asana.", upvotes: "12m", downvotes: "1.4k", profilePic: "https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&w=100&q=80" },
-          { id: 3, username: "Use whatever you like", text: "Honestly, Notion is the best all-in-one tool right now.", upvotes: "12m", downvotes: "1.4k", profilePic: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=100&q=80" },
-          { id: 4, username: "Figma? or something...", text: "I agree, Figma is essential for the design phase.", upvotes: "12m", downvotes: "1.4k", profilePic: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=100&q=80" },
-       ]);
-
+       const repliesData = await fetchReplies(postId);
+       setReplies(repliesData || []);
     } catch (err) {
       console.log('Failed to load replies.', err);
+      setReplies([]);
     } finally {
       setLoadingReplies(false);
     }
@@ -93,21 +72,9 @@ export default function Explore() {
     if (replyText.trim()) {
       setReplyLoading(true);
       try {
-        // await sendReply(postId, replyText.trim());
-        
-        // Mock submission
-        await new Promise(r => setTimeout(r, 500));
-        setReplies([...replies, {
-           id: Date.now(),
-           username: "You",
-           text: replyText,
-           upvotes: 0,
-           downvotes: 0,
-           profilePic: "https://www.w3schools.com/w3images/avatar2.png"
-        }]);
-
+        await sendReply(postId, replyText.trim());
         setReplyText("");
-        // refreshReplies(postId); // In real app, re-fetch or append
+        refreshReplies(postId); // Re-fetch to see new reply
       } catch (err) {
         console.error("Failed to submit reply", err);
       } finally {
@@ -135,7 +102,7 @@ export default function Explore() {
           {posts.map((post, index) => (
             <div 
                key={index} 
-               className="bg-sky-50 dark:bg-card border border-sky-100 dark:border-border rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300"
+               className="bg-white dark:bg-card border border-blue-100 dark:border-border rounded-xl p-6 hover:shadow-md transition-all duration-300"
             >
                {/* Header */}
                <div className="flex items-start gap-4 mb-4">
@@ -143,12 +110,12 @@ export default function Explore() {
                      <img 
                         src={post.profilePic || "https://www.w3schools.com/w3images/avatar2.png"} 
                         alt={post.username} 
-                        className="w-12 h-12 rounded-full object-cover ring-2 ring-white dark:ring-gray-800"
+                        className="w-12 h-12 rounded-full object-cover ring-2 ring-white dark:ring-gray-900 shadow-sm"
                      />
                   </div>
                   <div>
                      <div className="flex items-center gap-2 mb-0.5">
-                        <span className="font-semibold text-blue-500">{post.username}</span>
+                        <span className="font-bold text-gray-900 dark:text-gray-100 hover:text-blue-600 transition-colors cursor-pointer">{post.username}</span>
                         <span className="text-xs text-gray-400">• {post.date || "Just now"}</span>
                      </div>
                      <p className="text-sm text-gray-500 dark:text-gray-400">{post.designation || "Member"}</p>
@@ -156,7 +123,10 @@ export default function Explore() {
                </div>
 
                {/* Content */}
-               <h3 className="text-xl font-medium text-gray-900 dark:text-white mb-4 leading-relaxed">
+               <h3 
+                  onClick={() => handleViewReplies(post.id)}
+                  className="text-lg font-semibold text-gray-900 dark:text-white mb-3 leading-snug cursor-pointer hover:text-blue-600 transition-colors"
+               >
                   {post.title}
                </h3>
 
@@ -165,7 +135,7 @@ export default function Explore() {
                   {(post.tags || ["General"]).map((tag, i) => (
                      <span 
                         key={i} 
-                        className="px-4 py-1.5 text-xs text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-md bg-transparent"
+                        className="px-3 py-1 text-xs font-medium text-blue-600 bg-blue-50 border border-blue-100 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800/30 rounded-full"
                      >
                         {tag}
                      </span>
@@ -173,17 +143,17 @@ export default function Explore() {
                </div>
 
                {/* Footer */}
-               <div className="flex items-center justify-between pt-4 border-t border-gray-200/60 dark:border-gray-700/60">
-                  <span className="text-sm text-gray-500 dark:text-gray-400 font-medium">
-                     Replies: {post.replies || 0}
+               <div className="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-800">
+                  <span className="text-xs font-medium text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800 px-2 py-1 rounded-full">
+                     {post.replies || 0} Replies
                   </span>
                   
                   <button 
                      onClick={() => handleViewReplies(post.id)}
-                     className="flex items-center gap-2 text-sm text-red-400 hover:text-red-500 transition-colors font-medium"
+                     className="flex items-center gap-1.5 text-sm font-medium text-red-500 hover:text-red-600 transition-colors bg-red-50 dark:bg-red-900/10 px-3 py-1.5 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/20"
                   >
                      View Replies
-                     <FiExternalLink className="w-4 h-4" />
+                     <FiExternalLink className="w-3.5 h-3.5" />
                   </button>
                </div>
             </div>

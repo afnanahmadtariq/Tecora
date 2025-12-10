@@ -1,111 +1,175 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { fetchPostById } from '../api/posts'; 
+import { fetchPostById, fetchReplies } from '../api/posts'; 
+import { FiArrowLeft, FiBold, FiUnderline, FiItalic, FiSend, FiThumbsUp, FiThumbsDown, FiChevronDown, FiChevronUp } from 'react-icons/fi';
+import clsx from 'clsx';
 
 export default function PostPage() {
   const { postId } = useParams();
+  const navigate = useNavigate();
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [activeTab, setActiveTab] = useState('All');
+  const [replyText, setReplyText] = useState('');
+  const [replies, setReplies] = useState([]);
 
   useEffect(() => {
-    const getPostDetails = async () => {
+    const getData = async () => {
+      setLoading(true);
       try {
-        const data = await fetchPostById(postId); 
-        setPost(data);
+        const [postData, repliesData] = await Promise.all([
+          fetchPostById(postId),
+          fetchReplies(postId) // Fetching replies separately
+        ]);
+        
+        setPost(postData);
+        setReplies(repliesData || []); // Ensure array
       } catch (err) {
-        console.error(err);
-        setError('Failed to load post details. Please try again later.');
+        console.error("Failed to fetch post data:", err);
       } finally {
         setLoading(false);
       }
     };
-
-    getPostDetails();
+    getData();
   }, [postId]);
 
-  useEffect(() => {
-    if (window.location.hash === '#answers') {
-      const answersSection = document.getElementById('answers');
-      if (answersSection) {
-        answersSection.scrollIntoView({ behavior: 'smooth' });
-      }
-    }
-  }, [postId]);
+  const toggleExpand = (id) => {
+    setReplies(replies.map(r => r.id === id ? { ...r, isExpanded: !r.isExpanded } : r));
+  };
 
-  if (loading) {
-     return (
-       <div className="flex items-center justify-center min-h-[50vh]">
-         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-       </div>
-     );
-  }
+  if (loading) return <div className="p-8 text-center">Loading...</div>;
+  if (!post) return <div className="p-8 text-center">Post not found</div>;
 
-  if (error) {
-    return (
-      <div className="flex items-center justify-center min-h-[50vh] text-destructive">
-        <p>{error}</p>
-      </div>
-    );
-  }
+  const tagsList = post.tags ? post.tags.split(',') : [];
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in duration-500">
-      <div className="flex items-center justify-between">
-         <h1 className="text-3xl font-bold tracking-tight text-foreground">
-           Post Details
-         </h1>
-         <span className="text-sm text-muted-foreground">ID: {postId}</span>
-      </div>
+    <div className="max-w-4xl mx-auto p-4 md:p-6 space-y-6 animate-in fade-in duration-500">
+      
+      {/* Back Button */}
+      <button onClick={() => navigate(-1)} className="text-muted-foreground hover:text-foreground transition-colors mb-2">
+        <FiArrowLeft className="w-6 h-6" />
+      </button>
 
-      <div className="bg-card text-card-foreground p-8 rounded-xl border border-border shadow-sm">
-        <h2 className="text-2xl font-bold mb-2">{post.title}</h2>
-        <p className="text-sm text-muted-foreground mb-6">{new Date(post.date).toLocaleString()}</p>
-        
-        <div className="text-foreground leading-relaxed space-y-4 mb-8">
-          <p>{post.description}</p>
-        </div>
-
-        {post.media && (
-          <div className="mb-8 rounded-lg overflow-hidden border border-border">
-            <img src={post.media} alt="Post media" className="w-full h-auto object-cover" />
+      {/* Reply Input Section */}
+      <div className="bg-white dark:bg-card border border-blue-100 dark:border-border rounded-xl p-6 shadow-sm">
+        <div className="flex gap-4">
+          <div className="shrink-0">
+             <img src="https://i.pravatar.cc/150?u=me" alt="My Avatar" className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm" />
           </div>
-        )}
-
-        <div className="flex flex-wrap gap-2">
-          {post.tags && post.tags.split(',').map((tag) => (
-            <span
-              key={tag}
-              className="px-3 py-1 text-sm font-medium bg-secondary text-secondary-foreground rounded-full"
-            >
-              #{tag.trim()}
-            </span>
-          ))}
+          <div className="flex-1">
+             <div className="relative">
+               <textarea
+                 value={replyText}
+                 onChange={(e) => setReplyText(e.target.value)}
+                 placeholder="Write you Reply here..."
+                 className="w-full bg-gray-50 dark:bg-accent/50 border border-gray-200 dark:border-border rounded-lg p-4 min-h-[120px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 resize-none transition-all"
+               />
+               
+               {/* Toolbar & Action */}
+               <div className="flex items-center justify-between mt-3 px-1">
+                 <div className="flex items-center gap-2 text-gray-400">
+                    <button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors"><FiBold className="w-4 h-4" /></button>
+                    <button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors"><FiUnderline className="w-4 h-4" /></button>
+                    <button className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md transition-colors"><FiItalic className="w-4 h-4" /></button>
+                 </div>
+                 
+                 <button className="flex items-center gap-2 px-6 py-2 bg-red-50 text-red-500 font-medium rounded-full hover:bg-red-100 hover:scale-105 transition-all active:scale-95">
+                   Post Answer
+                   <FiSend className="w-4 h-4" />
+                 </button>
+               </div>
+             </div>
+          </div>
         </div>
       </div>
 
-      {/* Answers Section */}
-      <div id="answers" className="space-y-6">
-        <h3 className="text-2xl font-semibold text-foreground">Answers</h3>
-        {post.answers && post.answers.length > 0 ? (
-          <div className="space-y-4">
-            {post.answers.map((answer, index) => (
-              <div key={index} className="bg-card text-card-foreground p-6 rounded-xl border border-border shadow-sm">
-                <div className="flex justify-between items-center mb-4">
-                   <p className="text-sm text-muted-foreground">{new Date(answer.date).toLocaleDateString()}</p>
-                   {/* Add author info if available */}
+      {/* Question Card */}
+      <div className="bg-white dark:bg-card border border-blue-100 dark:border-border rounded-xl p-8 shadow-sm">
+        <div className="flex gap-4">
+           <div className="shrink-0">
+             <img src="https://i.pravatar.cc/150?u=author" alt="Author" className="w-12 h-12 rounded-full border-2 border-white shadow-sm" />
+           </div>
+           <div className="space-y-4 flex-1">
+             <div>
+               <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 leading-snug mb-2">
+                 {post.title}
+               </h1>
+               <span className="text-xs font-medium text-gray-400">{new Date(post.date).toDateString()}</span>
+             </div>
+             
+             <div className="flex flex-wrap gap-2">
+               {tagsList.map(tag => (
+                 <span key={tag} className="px-4 py-1.5 rounded-full text-xs font-medium bg-blue-50 text-blue-600 border border-blue-100 dark:bg-blue-900/20 dark:text-blue-300 dark:border-blue-800/30">
+                   {tag.trim()}
+                 </span>
+               ))}
+             </div>
+           </div>
+        </div>
+      </div>
+
+      {/* Replies Header & Filters */}
+      <div className="space-y-6">
+        <h2 className="text-xl font-bold text-gray-700 dark:text-gray-200">Replies ({replies.length})</h2>
+        <div className="flex gap-3">
+           {['All', 'Accepted', 'Un Seen'].map(tab => (
+             <button
+               key={tab}
+               onClick={() => setActiveTab(tab)}
+               className={clsx(
+                 "px-8 py-2 rounded-full text-sm font-medium transition-all border",
+                 activeTab === tab 
+                   ? "bg-blue-500 text-white border-blue-500 shadow-lg shadow-blue-500/30" 
+                   : "bg-transparent text-gray-500 border-blue-200 dark:border-gray-700 hover:border-blue-400 hover:text-blue-500"
+               )}
+             >
+               {tab}
+             </button>
+           ))}
+        </div>
+
+        {/* Replies List */}
+        <div className="space-y-4">
+          {replies.map((reply) => (
+            <div key={reply.id} className="bg-white dark:bg-card border border-blue-50 dark:border-border rounded-xl p-6 shadow-sm hover:shadow-md transition-all">
+              <div className="flex gap-4">
+                <div className="shrink-0">
+                  <img src={reply.author.avatar} alt={reply.author.name} className="w-10 h-10 rounded-full object-cover" />
                 </div>
-                <div className="text-foreground leading-relaxed prose dark:prose-invert max-w-none">
-                   {answer.content}
+                <div className="flex-1 space-y-2">
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-bold text-blue-500 text-sm">{reply.author.name}</h3>
+                    <span className="text-xs text-gray-400">• {reply.time}</span>
+                  </div>
+                  <p className="text-xs text-gray-500 font-medium mb-2">{reply.author.role}</p>
+                  
+                  <div className={`text-sm text-gray-600 dark:text-gray-300 leading-relaxed ${!reply.isExpanded && 'line-clamp-2'}`}>
+                    {reply.content}
+                  </div>
+
+                  <div className="flex items-center justify-between pt-4 mt-2 border-t border-gray-50 dark:border-gray-800/50">
+                    <div className="flex gap-3">
+                      <button className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-500 bg-blue-50 dark:bg-blue-900/20 rounded-md hover:bg-blue-100 transition-colors">
+                        <FiThumbsUp className="w-3.5 h-3.5" /> Up vote
+                      </button>
+                      <button className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-red-400 bg-red-50 dark:bg-red-900/20 rounded-md hover:bg-red-100 transition-colors">
+                        <FiThumbsDown className="w-3.5 h-3.5" /> Down Vote
+                      </button>
+                    </div>
+                    
+                    <button 
+                      onClick={() => toggleExpand(reply.id)}
+                      className="flex items-center gap-1 text-xs font-medium text-red-500 hover:text-red-600 transition-colors"
+                    >
+                      {reply.isExpanded ? 'Collapse' : 'Expand'}
+                      {reply.isExpanded ? <FiChevronUp className="w-3.5 h-3.5" /> : <FiChevronDown className="w-3.5 h-3.5" />}
+                    </button>
+                  </div>
                 </div>
               </div>
-            ))}
-          </div>
-        ) : (
-          <div className="bg-muted/30 rounded-xl p-8 text-center border-2 border-dashed border-border">
-            <p className="text-muted-foreground">No answers yet. Be the first to answer!</p>
-          </div>
-        )}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
